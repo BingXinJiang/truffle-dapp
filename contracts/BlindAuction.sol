@@ -61,6 +61,10 @@ contract BlindAuction {
 			deposit:msg.value
 			}));
 	}
+
+	function revel(){
+		
+	}
 	
 }
 

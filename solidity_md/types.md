@@ -205,8 +205,225 @@ In a similar way, the function delegatecall can be used: the difference is that 
 函数delegatecall也可以以同样的方式被使用：唯一的区别在于使用的提供地址的代码不同，所有其他的（存储，余额等）都是来自于当前的合约。delegatecall的目的是使用存储在其他合约中的库函数。使用者必须确保两个合约中的存储布局适合delegatecall函数的调用。
 
 
+All three functions call, delegatecall and callcode are very low-level functions and should only be used as a last resort as they break the type-safety of Solidity.
 
+所有这三个函数之中，delegatecall和callcode是非常低级的函数，应该是最后的备选，因为它们会打破Solidity的类型安全机制。
 
+The .gas() option is available on all three methods, while the .value() option is not supported for delegatecall.
+
+.gas()函数可用于以上三个方法。但是.value()函数不支持delegatecall函数。
+
+```
+Note
+
+All contracts can be converted to address type, so it is possible to query the balance of the current contract using address(this).balance.
+
+所有的合约都可以转化为地址类型，因此可以使用地址的balance属性查询当前合约的余额。
+```
+
+```
+Note
+
+The use of callcode is discouraged and will be removed in the future.
+
+callcode不推荐使用，未来该函数可能被移除。
+```
+
+```
+Warning
+
+All these functions are low-level functions and should be used with care. Specifically, any unknown contract might be malicious and if you call it, you hand over control to that contract which could in turn call back into your contract, so be prepared for changes to your state variables when the call returns.
+
+所有这些函数都是很低级的函数，使用的时候需要非常小心。具体来说就是，任何未知的合约都是很危险的，如果你调用它，就等于将控制权交给了那个合约，那么这个合约就可以回调你的合约，并通过回调函数改变你合约内部的状态。
+```
+
+#####Fixed-size byte arrays 固定大小的字节数组
+
+bytes1, bytes2, bytes3, …, bytes32. byte is an alias for bytes1.
+
+bytes1, bytes2, bytes3, ..., bytes32. byte是bytes1的简称。
+
+Operators: 操作符
+
+	*	Comparisons: <=, <, ==, !=, >=, > (evaluate to bool) 比较运算符
+	*	Bit operators: &, |, ^ (bitwise exclusive or 按位异或), ~ (bitwise negation 按位否), << (left shift 左移), >> (right shift 右移) 位运算符
+	*	Index access: If 'x' is of type 'bytesI', then 'x[k]' for '0 <= k < I' returns the 'k' th byte (read-only). 按索引访问 如果’x‘是bytesI类型，当0<=k<I的时候，x[k]返回第k个字节（只读）。
+
+The shifting operator works with any integer type as right operand (but will return the type of the left operand), which denotes the number of bits to shift by. Shifting by a negative amount will cause a runtime exception.
+
+位移运算使用整数类型作为操作数，代表着移动的位数。位移一个负数，会导致运行时错误。
+
+Members: 成员变量
+
+	*	'.length' yields the fixed length of the byte array (read-only). 返回字节数组的固定长度（只读）
+
+```
+Note
+
+It is possible to use an array of bytes as byte[], but it is wasting a lot of space, 31 bytes every element, to be exact, when passing in calls. It is better to use bytes.
+
+使用byte[]字节数组也是可以的，但是由于每个byte[]会占用31个字节，会浪费空间。尤其当作为调用参数传入时，最好使用bytes。
+```
+
+#####Dynamically-sized byte array 长度动态变化的字节数组
+
+bytes:Dynamically-sized byte array, see Arrays. Not a value-type!
+
+bytes：动态长度字节数组，参见Arrays。非值类型
+
+string:Dynamically-sized UTF-8-encoded string, see Arrays. Not a value-type!
+
+string：动态长度UTF-8编码字符串，参见Arrays。非值类型。
+
+As a rule of thumb, use bytes for arbitrary-length raw byte data and string for arbitrary-length string (UTF-8) data. If you can limit the length to a certain number of bytes, always use one of bytes1 to bytes32 because they are much cheaper.
+
+根据经验，对于任意长度的二进制数据或者任意长度的字符串，使用bytes。对于可以限定长度的数据，使用bytes1到bytes32之间的类型，可以节约空间。
+
+####Address Literals 地址标示符
+
+Hexadecimal literals that pass the address checksum test, for example '0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF' are of 'address' type. Hexadecimal literals that are between 39 and 41 digits long and do not pass the checksum test produce a warning and are treated as regular rational number literals.
+
+通过地址校验的十六进制数为地址类型，例如：'0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF'。这些十六进制的数据长度在39到41位之间，如果不能通过校验将会产生一个警告，该数被当做常规有理数处理。
+
+```
+Note
+
+The mixed-case address checksum format is defined in EIP-55.
+
+地址检验格则在EIP-55。
+```
+
+####Rational and Integer Literals 有理数和整数的表示
+
+Integer literals are formed from a sequence of numbers in the range 0-9. They are interpreted as decimals. For example, 69 means sixty nine. Octal literals do not exist in Solidity and leading zeros are invalid.
+
+整数是由0-9之间的数字序列组成。它们被解释为小数。例如69即为六十九。在Solidity中不存在八进制的数，前导0是无效的。
+
+Decimal fraction literals are formed by a . with at least one number on one side. Examples include 1., .1 and 1.3.
+
+小数是由字符‘.’构成的，在‘.’的两边至少有一个数。例如：1.,.1,1.3。
+
+Scientific notation is also supported, where the base can have fractions, while the exponent cannot. Examples include 2e10, -2e10, 2e-10, 2.5e1.
+
+科学计数法也是支持的，底数可以是小数，但是指数不可以。例如：2e^10, -2e^10, 2e^-10, 2.5^e1。
+
+Number literal expressions retain arbitrary precision until they are converted to a non-literal type (i.e. by using them together with a non-literal expression). This means that computations do not overflow and divisions do not truncate in number literal expressions.
+
+数字可以表示任意的精度，如果它们不被转化为非数字类型（例如把数字和非数字类型一块使用）。这意味着计算不会溢出，数字除法运算中结果也不会被截断。
+
+For example, (2**800 + 1) - 2**800 results in the constant 1 (of type uint8) although intermediate results would not even fit the machine word size. Furthermore, .5 * 8 results in the integer 4 (although non-integers were used in between).
+
+例如，(2^800+1)-2^800的结果是uint8类型的常量1，尽管运算过程中的结果甚至超过了机器字节的大小。.5 * 8 结果是整数4（尽管使用了非整数类型）。
+
+Any operator that can be applied to integers can also be applied to number literal expressions as long as the operands are integers. If any of the two is fractional, bit operations are disallowed and exponentiation is disallowed if the exponent is fractional (because that might result in a non-rational number).
+
+任何用于整数的运算符都是可以用于数字表达式的，只要位运算操作数是整数。如果这两者任何一个是小数，位操作是不允许的并且如果指数是小数，则不允许进行位运算，因为可能会产生无理数。
+
+```
+Note
+
+Solidity has a number literal type for each rational number. Integer literals and rational number literals belong to number literal types. Moreover, all number literal expressions (i.e. the expressions that contain only number literals and operators) belong to number literal types. So the number literal expressions ‘1 + 2’ and ‘2 + 1’ both belong to the same number literal type for the rational number three.
+
+Solidity对任何的有理数都有对应的数字类型。整数类和有理数类都属于数字类。所有的数字类型的表达式（只包含数字和表达式）都属于数字类型。因此数字表达式‘1+2’和‘2+1’都是和数字3相同的数字表达式。
+```
+
+```
+Warning
+
+Division on integer literals used to truncate in earlier versions, but it will now convert into a rational number, i.e. 5 / 2 is not equal to 2, but to 2.5.
+
+早期版本中整数的除法会被截断，但是现在将会被转换为有理数。例如5/2不等于2，而是等于2.5。
+```
+
+```
+Note
+
+Number literal expressions are converted into a non-literal type as soon as they are used with non-literal expressions. Even though we know that the value of the expression assigned to b in the following example evaluates to an integer, but the partial expression 2.5 + a does not type check so the code does not compile
+
+数字表达式一旦与非数字表达式类型一起使用表达式进行计算，就会被转化为非数字表达式。在下面的例子中，尽管我们知道b的表达式值，但是由于类型表达式2.5+a会被解释成非数字表达式，因此这段代码会编译不通过。
+```
+
+```
+uint128 a = 1;
+uint128 b = 2.5 + a + 0.5;
+```
+
+####String Literals 字符串类型
+
+String literals are written with either double or single-quotes ("foo" or 'bar'). They do not imply trailing zeroes as in C; "foo" represents three bytes not four. As with integer literals, their type can vary, but they are implicitly convertible to bytes1, …, bytes32, if they fit, to bytes and to string.
+
+字符串类型被写作以双引号和单引号包括("foo"或‘bar’)。它们实现的时候不像C语言那样末尾补0，“foo”代表3个字节而不是4个。和整数类型一样，它们的类型也是可变的，然而它们可以被隐式转化为bytes1，...，bytes32，符合条件的话，还可以转化bytes，string。
+
+String literals support escape characters, such as \n, \xNN and \uNNNN. \xNN takes a hex value and inserts the appropriate byte, while \uNNNN takes a Unicode codepoint and inserts an UTF-8 sequence.
+
+字符串类型支持转义字符，例如 \n，\xNN，和 \uNNN。\xNN获取到十六进制的值，并存储到合适的byte中，\uNNN采用Unicode编码，并存储到UTF-8序列中。
+
+####Hexadecimal Literals 十六进制字符类型
+
+Hexademical Literals are prefixed with the keyword hex and are enclosed in double or single-quotes (hex"001122FF"). Their content must be a hexadecimal string and their value will be the binary representation of those values.
+
+十六进制字符类型以关键字hex为前缀，以双引号或单引号包括，例如：hex“001222FF”。它们的内容必须是十六进制字符串，它们的值以二进制的形式存储。
+
+Hexademical Literals behave like String Literals and have the same convertibility restrictions.
+
+十六进制字符类型和字符串类型比较相似，拥有同样的转化规则。
+
+####Enums 枚举类型
+
+Enums are one way to create a user-defined type in Solidity. They are explicitly convertible to and from all integer types but implicit conversion is not allowed. The explicit conversions check the value ranges at runtime and a failure causes an exception. Enums needs at least one member.
+
+在Solidity中，枚举是用户自定义类型的一种方式之一。它们可以显式的被转化为整数或从整数显式的转化而来，但是不允许被隐式的转化。显式转化将在运行时进行值的检查，转换失败将抛出异常。枚举类至少需要一个成员。
+
+```
+pragma solidity ^0.4.16;
+
+contract test {
+    enum ActionChoices { GoLeft, GoRight, GoStraight, SitStill }
+    ActionChoices choice;
+    ActionChoices constant defaultChoice = ActionChoices.GoStraight;
+
+    function setGoStraight() public {
+        choice = ActionChoices.GoStraight;
+    }
+
+    // Since enum types are not part of the ABI, the signature of "getChoice"
+    // will automatically be changed to "getChoice() returns (uint8)"
+    // for all matters external to Solidity. The integer type used is just
+    // large enough to hold all enum values, i.e. if you have more values,
+    // `uint16` will be used and so on.
+    function getChoice() public view returns (ActionChoices) {
+        return choice;
+    }
+
+    function getDefaultChoice() public pure returns (uint) {
+        return uint(defaultChoice);
+    }
+}
+```
+
+####Function Types 函数类型
+
+Function types are the types of functions. Variables of function type can be assigned from functions and function parameters of function type can be used to pass functions to and return functions from function calls. Function types come in two flavours - internal and external functions:
+
+函数类型用来表示函数的类型。函数类型的变量可以使用函数、函数类型的参数进行赋值，可以作为函数参数传递，在函数调用中返回函数。函数的类型可以分为两类-内部函数和外部函数。
+
+Internal functions can only be called inside the current contract (more specifically, inside the current code unit, which also includes internal library functions and inherited functions) because they cannot be executed outside of the context of the current contract. Calling an internal function is realized by jumping to its entry label, just like when calling a function of the current contract internally.
+
+内部函数只能在当前合约内被调用(更确切的说是在当前代码单元，包括库函数和继承函数)，因为它们不能在超出当前合约的上下文环境执行。调用一个内部函数是通过跳到函数的入口标签实现的，就像内部调用当前合约的函数一样。
+
+External functions consist of an address and a function signature and they can be passed via and returned from external function calls.
+
+外部函数包含一个地址和一个函数签名，它们可以通过外部函数的调用被传递和返回。
+
+Function types are notated as follows:
+
+函数类型的表达式如下：
+
+```
+function (<parameter types>) {internal|external} [pure|constant|view|payable] [returns (<return types>)]
+```
+
+In contrast to the parameter types, the return types cannot be empty - if the function type should not return anything, the whole 'returns (< return types >)' part has to be omitted.
 
 
 

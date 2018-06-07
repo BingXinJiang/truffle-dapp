@@ -425,6 +425,217 @@ function (<parameter types>) {internal|external} [pure|constant|view|payable] [r
 
 In contrast to the parameter types, the return types cannot be empty - if the function type should not return anything, the whole 'returns (< return types >)' part has to be omitted.
 
+和参数的类型不同，返回类型不能为空，如果函数不返回任何东西，整个“returns (< return types >”的部分应全部省略。
+
+By default, function types are internal, so the internal keyword can be omitted. In contrast, contract functions themselves are public by default, only when used as the name of a type, the default is internal.
+
+默认情况下函数类型是内部属性，因此internal关键字可以省略。相比之下，合约函数本身是公共的，只有作为类型的名称时默认是内部的。
+
+There are two ways to access a function in the current contract: Either directly by its name, ‘f’, or using ‘this.f’. The former will result in an internal function, the latter in an external function.
+
+在合约中有两种方式可以访问到函数，直接访问函数名‘f’或者使用‘this.f’。前者调用内部函数，后者调用外部函数。
+
+If a function type variable is not initialized, calling it will result in an exception. The same happens if you call a function after using delete on it.
+
+如果一个函数类型的变量没有初始化，调用此函数的时候回抛出一个异常。一个函数被删除后再调用，也会抛出同样的异常。
+
+If external function types are used outside of the context of Solidity, they are treated as the ‘function’ type, which encodes the address followed by the function identifier together in a single ‘bytes24’ type.
+
+如果外部函数在Solidity以外的上下文环境使用，它们将被当做一个包含函数标识符的被编码的bytes24类型的地址。
+
+Note that public functions of the current contract can be used both as an internal and as an external function. To use ‘f’ as an internal function, just use ‘f’, if you want to use its external form, use ‘this.f’.
+
+注意到目前合约的公共函数既可以用作内部函数也可以作为外部函数。使用‘f’就代表使用内部函数，使用‘this.f’就代表使用外部函数。
+
+Additionally, public (or external) functions also have a special member called ‘selector’, which returns the [ABI function selector](http://solidity.readthedocs.io/en/v0.4.24/abi-spec.html#abi-function-selector):
+
+另外，公共函数有一个特定的成员变量‘selector’，它返回ABI函数的selector。
+
+```
+pragma solidity ^0.4.16;
+
+contract Selector {
+  function f() public view returns (bytes4) {
+    return this.f.selector;
+  }
+}
+```
+
+Example that shows how to use internal function types:
+
+下面的例子说明了怎么使用内部函数类型。
+
+```
+pragma solidity ^0.4.16;
+
+library ArrayUtils {
+  // internal functions can be used in internal library functions because
+  // they will be part of the same code context
+  // 内部函数可以用于内部库函数，因为它们属于同一个上下文
+  function map(uint[] memory self, function (uint) pure returns (uint) f)
+    internal
+    pure
+    returns (uint[] memory r)
+  {
+    r = new uint[](self.length);
+    for (uint i = 0; i < self.length; i++) {
+      r[i] = f(self[i]);
+    }
+  }
+  function reduce(
+    uint[] memory self,
+    function (uint, uint) pure returns (uint) f
+  )
+    internal
+    pure
+    returns (uint r)
+  {
+    r = self[0];
+    for (uint i = 1; i < self.length; i++) {
+      r = f(r, self[i]);
+    }
+  }
+  function range(uint length) internal pure returns (uint[] memory r) {
+    r = new uint[](length);
+    for (uint i = 0; i < r.length; i++) {
+      r[i] = i;
+    }
+  }
+}
+
+contract Pyramid {
+  using ArrayUtils for *;
+  function pyramid(uint l) public pure returns (uint) {
+    return ArrayUtils.range(l).map(square).reduce(sum);
+  }
+  function square(uint x) internal pure returns (uint) {
+    return x * x;
+  }
+  function sum(uint x, uint y) internal pure returns (uint) {
+    return x + y;
+  }
+}
+```
+
+Another example that uses external function types:
+
+另外一个使用外部函数的例子：
+
+```
+pragma solidity ^0.4.22;
+
+contract Oracle {
+  struct Request {
+    bytes data;
+    function(bytes memory) external callback;
+  }
+  Request[] requests;
+  event NewRequest(uint);
+  function query(bytes data, function(bytes memory) external callback) public {
+    requests.push(Request(data, callback));
+    emit NewRequest(requests.length - 1);
+  }
+  function reply(uint requestID, bytes response) public {
+    // Here goes the check that the reply comes from a trusted source
+    // 这里用来检测回复源是否受信任
+    requests[requestID].callback(response);
+  }
+}
+
+contract OracleUser {
+  // known contract
+  // 已知合约
+  Oracle constant oracle = Oracle(0x1234567); 
+  function buySomething() {
+    oracle.query("USD", this.oracleResponse);
+  }
+  function oracleResponse(bytes response) public {
+    require(
+        msg.sender == address(oracle),
+        "Only oracle can call this."
+    );
+    // Use the data
+  }
+}
+```
+
+```
+Note
+
+Lambda or inline functions are planned but not yet supported.
+
+Lambda或内联函数计划在未来支持，但目前还没有支持。
+```
+
+##Reference Types 引用类型
+
+Complex types, i.e. types which do not always fit into 256 bits have to be handled more carefully than the value-types we have already seen. Since copying them can be quite expensive, we have to think about whether we want them to be stored in memory (which is not persisting) or storage (where the state variables are held).
+
+复杂类型，不能都归为256位的类型，相对于我们之前了解的值值类型，处理起来我们应该更加小心。由于拷贝它们花费比较大，我们考虑是否把它们存储在内存中(非持久存储)或者存储器中(存储状态变量的地方)。
+
+####Data Location
+
+Every complex type, i.e. arrays and structs, has an additional annotation, the “data location”, about whether it is stored in memory or in storage. Depending on the context, there is always a default, but it can be overridden by appending either ‘storage’ or ‘memory’ to the type. The default for function parameters (including return parameters) is ‘memory’, the default for local variables is ‘storage’ and the location is forced to ‘storage’ for state variables (obviously).
+
+每一个复杂类型，例如：数组和结构体，都有一个附加的注解，即“数据位置”关于数据存储在内存中还是存储器中。根据上下文的不同，每种类型会有默认值，但可以通过给类型添加“storage”或者“memory”关键字来覆盖。函数参数包括函数返回参数默认存储是“memory”，本地变量的存储是“storage”，状态变量的位置强制存储为“storage”。
+
+There is also a third data location, ‘calldata’, which is a non-modifiable, non-persistent area where function arguments are stored. Function parameters (not return parameters) of external functions are forced to ‘calldata’ and behave mostly like ‘memory’.
+
+还有第三中数据存储位置，calldata，这个位置存储着函数的参数，存储的数据不可修改，非持久存储。外部函数的参数被强制到calldata存储区，存储形式和memory相似。
+
+Data locations are important because they change how assignments behave: assignments between storage and memory and also to a state variable (even from other state variables) always create an independent copy. Assignments to local storage variables only assign a reference though, and this reference always points to the state variable even if the latter is changed in the meantime. On the other hand, assignments from a memory stored reference type to another memory-stored reference type do not create a copy.
+
+数据的位置很重要，因为它会改变分配行为：在storage和memory之间的分配，包括状态变量（甚至外部的状态变量）总是会创建一个副本。虽然本地存储的变量只是指定了一个引用，该引用始终指向该状态变量，及时该状态变量发生变化。另一方面，从一个内存存储的引用类型分配到另一个内存存储的引用类型将不会创建副本。
+
+```
+pragma solidity ^0.4.0;
+
+contract C {
+	// the data location of x is storage
+	// x 存储在storage区域
+    uint[] x; 
+
+    // the data location of memoryArray is memory
+    // memoryArray存储在memory中。
+    function f(uint[] memoryArray) public {
+    	// works, copies the whole array to storage
+    	// 有效， 拷贝整个array到storage中
+        x = memoryArray; 
+        // works, assigns a pointer, data location of y is storage
+        // 有效，声明一个指针，y的数据位置为storage
+        var y = x; 
+        // fine, returns the 8th element
+        // 好，返回第八个元素
+        y[7]; 
+        // fine, modifies x through y
+        // 好，通过y改变了x
+        y.length = 2; 
+        // fine, clears the array, also modifies y
+        // 好，清空array，同时改变了y
+        delete x; 
+        // The following does not work; it would need to create a new temporary /
+        // unnamed array in storage, but storage is "statically" allocated:
+        // 下面的操作无效
+        // 它需要建立一个临时的无名数组在storage中，但是storage是静态分配
+        // y = memoryArray;
+        // This does not work either, since it would "reset" the pointer, but there
+        // is no sensible location it could point to.
+        // 这也是无效的，它要重置指针的指向，但是并没有要指向的位置
+        // delete y;
+        // calls g, handing over a reference to x
+        // 调用g函数，释放对x的引用
+        // 调用g函数，
+        g(x); 
+        // calls h and creates an independent, temporary copy in memory
+        // 调用h函数，在memory中创建一个独立的临时的副本
+        h(x); 
+    }
+
+    function g(uint[] storage storageArray) internal {}
+    function h(uint[] memoryArray) public {}
+}
+```
+
 
 
 

@@ -636,6 +636,202 @@ contract C {
 }
 ```
 
+#####Summary 总结
+
+######Forced data location: 固定数据位置
+	*	parameters (not return) of external functions: calldata 外部函数参数(不包括返回参数)：calldata
+	*	state variables: storage 状态变量：storage
+
+######Default data location: 默认数据位置
+	*	parameters (also return) of functions: memory  函数参数(返回参数)：memory
+	*	all other local variables: storage 所有其他的本地变量：storage
+
+####Arrays 数组
+
+Arrays can have a compile-time fixed size or they can be dynamic. For storage arrays, the element type can be arbitrary (i.e. also other arrays, mappings or structs). For memory arrays, it cannot be a mapping and has to be an ABI type if it is an argument of a publicly-visible function.
+
+数组可以是编译时确定大小的数组或动态数组。对于数组的存储元素可以任意类型(其他的数组，映射或结构体等)。对于存储在memory中的数组，元素不能是mapping类型，并且作为一个公开可见的函数的参数数组元素必须是ABI类型。
+
+An array of fixed size ‘k’ and element type ‘T’ is written as ‘T[k]’, an array of dynamic size as ‘T[]’. As an example, an array of 5 dynamic arrays of ‘uint’ is ‘uint[][5]’ (note that the notation is reversed when compared to some other languages). To access the second uint in the third dynamic array, you use ‘x[2][1]’ (indices are zero-based and access works in the opposite way of the declaration, i.e. ‘x[2]’ shaves off one level in the type from the right).
+
+数组元素类型为‘T’，固定大小为‘k’的数组可以写作‘T[K]’，动态数组可以写作‘T[]’。例如，一个包含了五个uint数组的数组写作'uint[][5]'(这里的写法跟其他语言可能是相反的)。要访问第三个动态数组的第二个元素，可以使用‘x[2][1]’(索引从0开始，访问与声明的方式正好相反，例如，x[2]表示去掉一层右边的类型)。
+
+Variables of type ‘bytes’ and ‘string’ are special arrays. A ‘bytes’ is similar to ‘byte[]’, but it is packed tightly in calldata. ‘string’ is equal to ‘bytes’ but does not allow length or index access (for now).
+
+‘bytes’和‘string’类型的变量是特殊的数组。‘bytes’和‘byte[]’相似，但是‘bytes’类型的变量被包在‘calldata’中。‘string’等同于‘bytes’，但是目前来说不允许使用‘length’和索引。
+
+So ‘bytes’ should always be preferred over ‘byte[]’ because it is cheaper.
+
+‘bytes’由于使用起来更方便，因此相比‘byte[]’更多被使用。
+
+```
+Note
+
+If you want to access the byte-representation of a string 's', use 'bytes(s).length' / 'bytes(s)[7] = 'x';'. Keep in mind that you are accessing the low-level bytes of the UTF-8 representation, and not the individual characters!
+
+如果你想使用字符串s的bytes方法或属性，可以使用‘bytes(s).length’和‘bytes(s)[7] = 'x';’。请注意，这里访问的是UTF-8表示的低级字节，而不是单个的字符。
+```
+
+It is possible to mark arrays ‘public’ and have Solidity create a getter. The numeric index will become a required parameter for the getter.
+
+为数组做上’public‘的标记，并让Solidity创建一个getter函数是可能的。对于getter函数，字母索引将变成一个必须的参数。
+
+#####Allocating Memory Arrays 数组的内存分配
+
+Creating arrays with variable length in memory can be done using the ’new‘ keyword. As opposed to storage arrays, it is not possible to resize memory arrays by assigning to the ’.length‘ member.
+
+在’memory‘中创建可变长度的数组可以使用’new‘关键字。和’storage‘中的数组相反，它不能通过’.length‘设置数组的长度。
+
+```
+pragma solidity ^0.4.16;
+
+contract C {
+    function f(uint len) public pure {
+        uint[] memory a = new uint[](7);
+        bytes memory b = new bytes(len);
+        // Here we have a.length == 7 and b.length == len
+        a[6] = 8;
+    }
+}
+```
+
+#####Array Literals / Inline Arrays 
+
+Array literals are arrays that are written as an expression and are not assigned to a variable right away.
+
+array literals 是以表达式写入的数组，没有马上分配变量。
+
+```
+pragma solidity ^0.4.16;
+
+contract C {
+    function f() public pure {
+        g([uint(1), 2, 3]);
+    }
+    function g(uint[3] _data) public pure {
+        // ...
+    }
+}
+```
+
+The type of an array literal is a memory array of fixed size whose base type is the common type of the given elements. The type of [1, 2, 3] is uint8[3] memory, because the type of each of these constants is uint8. Because of that, it was necessary to convert the first element in the example above to uint. Note that currently, fixed size memory arrays cannot be assigned to dynamically-sized memory arrays, i.e. the following is not possible:
+
+array literal 的类型是一个固定大小存储在memory中的数组，基本类型为数组元素的类型。[1,2,3]的类型是memory uint8[3]，由于它的每一个元素的类型都是uint8。因此，我们有必要将上例中的第一个元素转化为uint。注意，目前固定大小的memory数组不能被动态数组指向，下面的例子中是不可以的：
+
+```
+// This will not compile.
+
+pragma solidity ^0.4.0;
+
+contract C {
+    function f() public {
+        // The next line creates a type error because uint[3] memory
+        // cannot be converted to uint[] memory.
+        // 下面的一行代码会导致类型错误，因为uint[3]memory不能转化为uint[] memory
+        uint[] x = [uint(1), 3, 4];
+    }
+}
+```
+
+It is planned to remove this restriction in the future but currently creates some complications because of how arrays are passed in the ABI.
+
+计划在未来会删除这一限制，但是目前，由于数组在ABI中传递方式会比较复杂。
+
+####Members
+
+######length
+Arrays have a length member to hold their number of elements. Dynamic arrays can be resized in storage (not in memory) by changing the .length member. This does not happen automatically when attempting to access elements outside the current length. The size of memory arrays is fixed (but dynamic, i.e. it can depend on runtime parameters) once they are created.
+
+数组有一个length的成员变量来标示数组内元素的数量。在storage中可以通过设置.length重置数组的长度(在memory中的数组不能这样做)。在尝试访问数组长度以外的元素时，数组长度不会被重置。memeory中的数组一旦被创建大小就固定了(但是实现动态化需要依赖运行时的参数)。
+
+######push
+Dynamic storage arrays and bytes (not string) have a member function called push that can be used to append an element at the end of the array. The function returns the new length.
+
+storage中的动态数组和bytes类型(非string)有一个push成员函数，可以通过该函数在数组末尾添加新的元素。该函数返回数组的新长度。
+
+```
+Warning
+
+It is not yet possible to use arrays of arrays in external functions.
+
+在外部函数中使用数组矩阵还不可以。
+```
+
+```
+Warning
+
+Due to limitations of the EVM, it is not possible to return dynamic content from external function calls. The function 'f' in 'contract C { function f() returns (uint[]) { ... } }' will return something if called from 'web3.js', but not if called from Solidity.
+
+由于EVM的限制，从外部函数的调用返回动态内容是不可以的。在合约’contract C { function f() returns (uint[]) { ... } }‘中的函数’f‘，在’web3.js‘中调用可以返回一些值，但是在Solidity中调用不可以返回一些值。
+
+The only workaround for now is to use large statically-sized arrays.
+
+目前的唯一解决方案是使用较大的静态类型数组。
+```
+
+```
+pragma solidity ^0.4.16;
+
+contract ArrayContract {
+    uint[2**20] m_aLotOfIntegers;
+    // Note that the following is not a pair of dynamic arrays but a
+    // dynamic array of pairs (i.e. of fixed size arrays of length two).
+    // 注意下面的变量声明不是一组动态数组，而是
+    bool[2][] m_pairsOfFlags;
+    // newPairs is stored in memory - the default for function arguments
+
+    function setAllFlagPairs(bool[2][] newPairs) public {
+        // assignment to a storage array replaces the complete array
+        m_pairsOfFlags = newPairs;
+    }
+
+    function setFlagPair(uint index, bool flagA, bool flagB) public {
+        // access to a non-existing index will throw an exception
+        m_pairsOfFlags[index][0] = flagA;
+        m_pairsOfFlags[index][1] = flagB;
+    }
+
+    function changeFlagArraySize(uint newSize) public {
+        // if the new size is smaller, removed array elements will be cleared
+        m_pairsOfFlags.length = newSize;
+    }
+
+    function clear() public {
+        // these clear the arrays completely
+        delete m_pairsOfFlags;
+        delete m_aLotOfIntegers;
+        // identical effect here
+        m_pairsOfFlags.length = 0;
+    }
+
+    bytes m_byteData;
+
+    function byteArrays(bytes data) public {
+        // byte arrays ("bytes") are different as they are stored without padding,
+        // but can be treated identical to "uint8[]"
+        m_byteData = data;
+        m_byteData.length += 7;
+        m_byteData[3] = byte(8);
+        delete m_byteData[2];
+    }
+
+    function addFlag(bool[2] flag) public returns (uint) {
+        return m_pairsOfFlags.push(flag);
+    }
+
+    function createMemoryArray(uint size) public pure returns (bytes) {
+        // Dynamic memory arrays are created using `new`:
+        uint[2][] memory arrayOfPairs = new uint[2][](size);
+        // Create a dynamic byte array:
+        bytes memory b = new bytes(200);
+        for (uint i = 0; i < b.length; i++)
+            b[i] = byte(i);
+        return b;
+    }
+}
+```
+
+##Structs
 
 
 

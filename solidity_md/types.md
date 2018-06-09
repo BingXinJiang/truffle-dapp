@@ -833,7 +833,246 @@ contract ArrayContract {
 
 ##Structs
 
+Solidity provides a way to define new types in the form of structs, which is shown in the following example:
 
+Solidity提供了一种按照结构体的形式定义新类型的方式，可以参照下面的例子：
+
+```
+pragma solidity ^0.4.11;
+
+contract CrowdFunding {
+    // Defines a new type with two fields.
+    // 定义一个包含两个域的新类型
+    struct Funder {
+        address addr;
+        uint amount;
+    }
+
+    struct Campaign {
+        address beneficiary;
+        uint fundingGoal;
+        uint numFunders;
+        uint amount;
+        mapping (uint => Funder) funders;
+    }
+
+    uint numCampaigns;
+    mapping (uint => Campaign) campaigns;
+
+    function newCampaign(address beneficiary, uint goal) public returns (uint campaignID) {
+    	// campaignID is return variable
+    	// campaignID为返回值变量
+        campaignID = numCampaigns++; 
+        // Creates new struct and saves in storage. We leave out the mapping type.
+        // 创建一个新的结构体，并保存在storage中。这里省略了mapping类型数据的赋值
+        campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0);
+    }
+
+    function contribute(uint campaignID) public payable {
+        Campaign storage c = campaigns[campaignID];
+        // Creates a new temporary memory struct, initialised with the given values
+        // and copies it over to storage.
+        // Note that you can also use Funder(msg.sender, msg.value) to initialise.
+        // 创建一个新的临时memory结构体，使用给定的值初始化，并把它拷贝到storage中。
+        // 你也可以使用构造函数初始化。
+        c.funders[c.numFunders++] = Funder({addr: msg.sender, amount: msg.value});
+        c.amount += msg.value;
+    }
+
+    function checkGoalReached(uint campaignID) public returns (bool reached) {
+        Campaign storage c = campaigns[campaignID];
+        if (c.amount < c.fundingGoal)
+            return false;
+        uint amount = c.amount;
+        c.amount = 0;
+        c.beneficiary.transfer(amount);
+        return true;
+    }
+}
+```
+The contract does not provide the full functionality of a crowdfunding contract, but it contains the basic concepts necessary to understand structs. Struct types can be used inside mappings and arrays and they can itself contain mappings and arrays.
+
+该合约没有包含众筹合约的所有功能，但它包含了理解结构体的基本概念。结构体可以被使用在mapping和arrays内，结构体本身也可以包含mapping和arrays。
+
+It is not possible for a struct to contain a member of its own type, although the struct itself can be the value type of a mapping member. This restriction is necessary, as the size of the struct has to be finite.
+
+尽管结构体本身可以是mapping类型的映射值，但是结构体不能包含自身的类型。因为结构体的大小必须是有限的，因此这个限制是必须的。
+
+Note how in all the functions, a struct type is assigned to a local variable (of the default storage data location). This does not copy the struct but only stores a reference so that assignments to members of the local variable actually write to the state.
+
+注意，在所有的函数中，结构体类型的变量是本地变量(默认的数据存储位置)。变量不会复制结构体只是一个引用。因此指向结构体成员的变量实际上写入了状态中。
+
+Of course, you can also directly access the members of the struct without assigning it to a local variable, as in ‘campaigns[campaignID].amount = 0’.
+
+当然你也可以直接访问结构体的成员而不声明变量，例如‘campaigns[campaignID].amount = 0’。
+
+##Mapping
+
+Mapping types are declared as ‘mapping(_KeyType => _ValueType)’. Here ‘_KeyType’ can be almost any type except for a mapping, a dynamically sized array, a contract, an enum and a struct. ‘_ValueType’ can actually be any type, including mappings.
+
+Mapping类型可以如下方式声明‘mapping(_KeyType => _ValueType)’，这里‘_KeyType’可以是除了映射，动态数组，合约、枚举，结构体以外的任何类型。‘_ValueType’可以是任何类型，包括映射。
+
+Mappings can be seen as hash tables which are virtually initialized such that every possible key exists and is mapped to a value whose byte-representation is all zeros: a type’s default value. The similarity ends here, though: The key data is not actually stored in a mapping, only its keccak256 hash used to look up the value.
+
+映射可以看成一个hash表，它的每一个键都被初始化为每一个字节位均为0的值(类型的默认值)。映射和hash表的相似就这么多了，数据并不存储在mapping中，只有它的keccak256哈希值用来查找数据。
+
+Because of this, mappings do not have a length or a concept of a key or value being “set”.
+
+因此，映射没有长度和设置键或值的概念。
+
+Mappings are only allowed for state variables (or as storage reference types in internal functions).
+
+映射只能用于状态变量(或者作为内部函数存储引用)。
+
+It is possible to mark mappings public and have Solidity create a getter. The ‘_KeyType’ will become a required parameter for the getter and it will return ‘_ValueType’.
+
+可以使用public修饰符标记mapping类型，这样Solidity会创建一个getter函数。getter函数的参数为‘_KeyType’，函数返回‘_ValueType’。
+
+The ‘_ValueType’ can be a mapping too. The getter will have one parameter for each ‘_KeyType’, recursively.
+
+‘_ValueType’也可以是mapping类型。getter将递归的使用每一个'_KeyType'。
+
+```
+pragma solidity ^0.4.0;
+
+contract MappingExample {
+    mapping(address => uint) public balances;
+
+    function update(uint newBalance) public {
+        balances[msg.sender] = newBalance;
+    }
+}
+
+contract MappingUser {
+    function f() public returns (uint) {
+        MappingExample m = new MappingExample();
+        m.update(100);
+        return m.balances(this);
+    }
+}
+```
+
+```
+Note
+
+Mappings are not iterable, but it is possible to implement a data structure on top of them. For an example, see iterable mapping.
+
+映射是不可遍历的，但可以基于mapping实现数据结构。例如，可以参考可遍历映射。
+```
+
+##Operators Involving LValues 涉及LValues的操作符
+
+If ‘a’ is an LValue (i.e. a variable or something that can be assigned to), the following operators are available as shorthands:
+
+如果‘a’是一个LValue(一个变量或者可被指向的)，下列操作符可用于简写。
+
+‘a += e’ is equivalent to ‘a = a + e’. The operators ‘-=’, ‘*=’, ‘/=’, ‘%=’, ‘|=’, ‘&=’ and ‘^=’ are defined accordingly. ‘a++’ and ‘a--’ are equivalent to ‘a += 1’ / ‘a -= 1’ but the expression itself still has the previous value of ‘a’. In contrast, ‘--a’ and ‘++a’ have the same effect on ‘a’ but return the value after the change.
+
+‘a += e’等同于‘a = a + e’。操作符‘-=’, ‘*=’, ‘/=’, ‘%=’, ‘|=’, ‘&=’ 和 ‘^=’都照此定义。‘a++’和‘a--’等同于‘a += 1’和‘a -= 1’，但是表达式本身仍然拥有运算前的‘a’值。与此相反，‘--a’和‘++a’同样作用于‘a’，但是返回变化后的值。
+
+####delete
+
+delete ‘a’ assigns the initial value for the type to a. I.e. for integers it is equivalent to ‘a = 0’, but it can also be used on arrays, where it assigns a dynamic array of length zero or a static array of the same length with all elements reset. For structs, it assigns a struct with all members reset.
+
+删除‘a’相当于将a的指向类型的初始值。例如，整数类型等同于‘a=0’，他也可以用在数组类型，动态数组长度变为0，静态数组还是同样的长度但是每个成员被重置。结构体的每个成员被重置。
+
+‘delete’ has no effect on whole mappings (as the keys of mappings may be arbitrary and are generally unknown). So if you delete a struct, it will reset all members that are not mappings and also recurse into the members unless they are mappings. However, individual keys and what they map to can be deleted.
+
+‘delete’操作对于整个mapping是无效的(由于mapping的key通常是变化的和未知的)。因此你delete一个结构体，通常重置除了mapping之外的所有成员，它还会递归的delete结构体的成员的成员，除非它们是mapping类型。
+
+It is important to note that ‘delete a’ really behaves like an assignment to a, i.e. it stores a new object in a.
+
+注意到‘delete a‘相当于给’a‘赋值，就像a存储了一个新的对象。
+
+```
+pragma solidity ^0.4.0;
+
+contract DeleteExample {
+    uint data;
+    uint[] dataArray;
+
+    function f() public {
+        uint x = data;
+        // sets x to 0, does not affect data
+        // 将x设置为0，但不会影响data
+        delete x; 
+        // sets data to 0, does not affect x which still holds a copy
+        // 将data设置为0，不会影响x的值，因为x拷贝了值
+        delete data; 
+        uint[] storage y = dataArray;
+        delete dataArray; // this sets dataArray.length to zero, but as uint[] is a complex object, also
+        // y is affected which is an alias to the storage object
+        // 这将会将dataArray的length属性置为0，由于uint[]是一个复杂类型，y是一个存储对象的引用，也会受到影响
+        // On the other hand: "delete y" is not valid, as assignments to local variables
+        // referencing storage objects can only be made from existing storage objects.
+        // 换句话说，’delete y‘是无效的，由于指向存储对象的本地变量引用只能从现有的存储对象进行分配。
+    }
+}
+```
+
+##Conversions between Elementary Types 基本类型之间的转换
+
+####Implicit Conversions 隐式转换
+
+If an operator is applied to different types, the compiler tries to implicitly convert one of the operands to the type of the other (the same is true for assignments). In general, an implicit conversion between value-types is possible if it makes sense semantically and no information is lost: ’uint8‘ is convertible to ’uint16‘ and ’int128‘ to ’int256‘, but ’int8‘ is not convertible to ’uint256‘ (because ’uint256‘ cannot hold e.g. -1). Furthermore, unsigned integers can be converted to bytes of the same or larger size, but not vice-versa. Any type that can be converted to ’uint160‘ can also be converted to ’address‘.
+
+如果一个操作符适用于不同的类型，编译器会尝试将一种类型隐式的转换为另外的类型(赋值的时候也是如此)。通常，如果没有语义上的差别和不会导致信息的都是值之间的语义转换是可能的：’uint8‘可以被转换为’uint16‘，’uint128‘可以被转化为’uint256‘，但是’int8‘不能被转换为’uint256‘(因为，uint256类型不包含例如-1这样的值)。更进一步，无符号整型可以转化为字节数更大或一样的类型，反过来就不可以。所有可以转换为’uint160‘的，也可以被转换为address类型。
+
+####Explicit Conversions 显式转换
+
+If the compiler does not allow implicit conversion but you know what you are doing, an explicit type conversion is sometimes possible. Note that this may give you some unexpected behaviour so be sure to test to ensure that the result is what you want! Take the following example where you are converting a negative int8 to a uint:
+
+如果编译器不允许隐式转换，同时你又知道你在做什么，显式的转换有时候也是可以的。由于这可能会发生不可预测的结果，因此你应该确认你得到的结果是你想要的结果。下面的例子是将一个负数int8类型转换为无符号的uint类型：
+
+```
+int8 y = -3;
+uint x = uint(y);
+```
+
+At the end of this code snippet, 'x' will have the value '0xfffff..fd' (64 hex characters), which is -3 in the two’s complement representation of 256 bits.
+
+在代码的末尾，’x‘的值会是’0xfffff..fd‘(64位十六进制字符)，这是-3在256位二进制补码中的表示。
+
+If a type is explicitly converted to a smaller type, higher-order bits are cut off:
+
+如果被转换为一个更小的类型，高位字节会被截掉。
+
+```
+uint32 a = 0x12345678;
+uint16 b = uint16(a); // b will be 0x5678 now
+```
+Since 0.5.0 explicit conversions between integers and fixed-size byte arrays are only allowed, if both have the same size. To convert between integers and fixed-size byte arrays of different size, they first have to be explicitly converted to a matching size. This makes alignment and padding explicit:
+
+如果整型和固定字节长度的数组拥有相同的大小，在0.5.0版本以后两者可以显示转换。在不同大小的整型和固定大小字节数组之间的转换，它们必须首先显示转换为同样的大小。这使得转换变得一致。
+
+```
+uint16 x = 0xffff;
+bytes32(uint256(x)); // pad on the left
+bytes32(bytes2(x)); // pad on the right
+```
+
+##Type Deduction 类型推断
+
+For convenience, it is not always necessary to explicitly specify the type of a variable, the compiler automatically infers it from the type of the first expression that is assigned to the variable:
+
+为了方便，并不总是需要指定变量的类型，编译器会根据分配给变量的第一个表达式自动推断出类型。
+
+```
+uint24 x = 0x123;
+var y = x;
+```
+
+Here, the type of 'y' will be uint24. Using var is not possible for function parameters or return parameters.
+
+这里，’y‘的类型是uint24。对于函数参数和返回参数不能使用var。
+
+```
+Warning
+
+The type is only deduced from the first assignment, so the loop in the following snippet is infinite, as 'i' will have the type 'uint8' and the highest value of this type is smaller than '2000'. 'for (var i = 0; i < 2000; i++) { ... }'
+
+类型只能从第一个指向中推断出来，下面的循环中，i将会是uint8类型，最大值小于2000。
+```
 
 
 

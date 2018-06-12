@@ -282,8 +282,247 @@ The semantics of assignment are a bit more complicated for non-value types like 
 
 A variable which is declared will have an initial default value whose byte-representation is all zeros. The “default values” of variables are the typical “zero-state” of whatever the type is. For example, the default value for a bool is false. The default value for the uint or int types is 0. For statically-sized arrays and bytes1 to bytes32, each individual element will be initialized to the default value corresponding to its type. Finally, for dynamically-sized arrays, bytes and string, the default value is an empty array or string.
 
+刚声明的变量将有一个各个字节位上都是0的初始值。这些默认值是无论什么类型的数据特定的零状态。例如，布尔类型的默认值是false。对于uint和int类型缺省值为0。对于静态大小的数组，从bytes1到bytes32，数组的每一个元素的值将被初始化为该值对应类型的零状态值。对于动态数组，bytes和string，缺省值是空数组和空字符串。
+
+A variable declared anywhere within a function will be in scope for the entire function, regardless of where it is declared (this will change soon, see below). This happens because Solidity inherits its scoping rules from JavaScript. This is in contrast to many languages where variables are only scoped where they are declared until the end of the semantic block. As a result, the following code is illegal and cause the compiler to throw an error, Identifier already declared:
+
+变量声明在函数中，变量的作用域是整个函数，无论变量在函数的哪一个地方声明的(后面可能会变化)。这是因为Solidity继承了JavaScript的作用域规则。很多语言变量的作用域是自变量声明的地方直到语义块结束的位置，这跟Solidity语言正好相反。所以，下面的代码是非法的，编译时会抛出一个标识符已存在的声明：
+
+```
+// This will not compile
+
+pragma solidity ^0.4.16;
+
+contract ScopingErrors {
+    function scoping() public {
+        uint i = 0;
+
+        while (i++ < 1) {
+            uint same1 = 0;
+        }
+
+        while (i++ < 2) {
+            uint same1 = 0;// Illegal, second declaration of same1
+        }
+    }
+
+    function minimalScoping() public {
+        {
+            uint same2 = 0;
+        }
+
+        {
+            uint same2 = 0;// Illegal, second declaration of same2
+        }
+    }
+
+    function forLoopScoping() public {
+        for (uint same3 = 0; same3 < 1; same3++) {
+        }
+
+        for (uint same3 = 0; same3 < 1; same3++) {// Illegal, second declaration of same3
+        }
+    }
+}
+```
+
+In addition to this, if a variable is declared, it will be initialized at the beginning of the function to its default value. As a result, the following code is legal, despite being poorly written:
+
+另外，变量一旦声明，变量就会在函数的开始初始化为缺省值。因此，尽管写的不好，下面的代码是合法的。
+
+```
+pragma solidity ^0.4.0;
+
+contract C {
+    function foo() public pure returns (uint) {
+        // baz is implicitly initialized as 0
+        uint bar = 5;
+        if (true) {
+            bar += baz;
+        } else {
+            uint baz = 10;// never executes
+        }
+        return bar;// returns 5
+    }
+}
+```
+
+####Scoping starting from Version 0.5.0 版本0.5.0之后的作用域
+
+Starting from version 0.5.0, Solidity will change to the more widespread scoping rules of C99 (and many other languages): Variables are visible from the point right after their declaration until the end of a { }-block. As an exception to this rule, variables declared in the initialization part of a for-loop are only visible until the end of the for-loop.
+
+从0.5.0版本开始，Solidity将改变为使用更为广泛的C99标准的变量作用域：变量的可用范围从声明的地方到大括号的作用域结束的位置。有一个例外情况就是，在for循环初始化时创建的变量只有在for循环内部，即for循环结束之前才可用。
+
+Variables and other items declared outside of a code block, for example functions, contracts, user-defined types, etc., do not change their scoping behaviour. This means you can use state variables before they are declared and call functions recursively.
+
+在代码快外部声明的变量或其他条目，例如函数，合约，用户自定义类型等等，作用域不会改变。这意味着你可以在声明之前使用状态变量，可以地柜调用函数。
+
+These rules are already introduced now as an experimental feature.
+
+这些规则目前已经以实验性功能被引入。
+
+As a consequence, the following examples will compile without warnings, since the two variables have the same name but disjoint scopes. In non-0.5.0-mode, they have the same scope (the function minimalScoping) and thus it does not compile there.
+
+如此，下面的例子编译的时候不会有警告，因为这两个变量虽然有相同的名字，但拥有不同的作用域。在非0.5.0模式下，它们拥有相同的作用域(函数作用域)会导致编译不通过。
+
+```
+pragma solidity ^0.4.0;
+pragma experimental "v0.5.0";
+contract C {
+    function minimalScoping() pure public {
+        {
+            uint same2 = 0;
+        }
+
+        {
+            uint same2 = 0;
+        }
+    }
+}
+```
+
+As a special example of the C99 scoping rules, note that in the following, the first assignment to x will actually assign the outer and not the inner variable. In any case, you will get a warning about the outer variable being shadowed.
+
+作为C99作用域规则的特殊例子，下面的例子中，第一次对变量x的赋值，是对外部的x进行的赋值，而不是内部的变量x的赋值。在这种情况下，你会得到一个外部变量被遮挡的警告。
+
+```
+pragma solidity ^0.4.0;
+pragma experimental "v0.5.0";
+contract C {
+    function f() pure public returns (uint) {
+        uint x = 1;
+        {
+            x = 2; // this will assign to the outer variable
+            uint x;
+        }
+        return x; // x has value 2
+    }
+}
+```
+
+##Error handling Assert,Require,Revert and Exceptions 错误处理：断言，必需，回滚，异常
+
+Solidity uses state-reverting exceptions to handle errors. Such an exception will undo all changes made to the state in the current call (and all its sub-calls) and also flag an error to the caller. The convenience functions assert and require can be used to check for conditions and throw an exception if the condition is not met. The assert function should only be used to test for internal errors, and to check invariants. The require function should be used to ensure valid conditions, such as inputs, or contract state variables are met, or to validate return values from calls to external contracts. If used properly, analysis tools can evaluate your contract to identify the conditions and function calls which will reach a failing assert. Properly functioning code should never reach a failing assert statement; if this happens there is a bug in your contract which you should fix.
+
+Solidity使用状态回滚来处理异常。对于当前的调用来说(包括所有的子调用)出现了这样的异常，不会造成任何的状态上的改变，并且会对调用者抛出一个标识。便利函数assert和require函数，可以用来检测是否满足条件，条件不满足会抛出异常。assert函数只用来测试内部错误和检查不变量。require函数用来确保条件的可用，比如，输入值，合约的状态变量是否满足条件，外部合约调用的返回值是否可用等。如果使用得当，分析工具可以评估出你的合约在什么情况下会导致函数调用失败。正确的函数代码执行过程中永远不会出现断言失败的状态，如果发生了这种情况，就说明在你的合约中存在着需要修复的bug。
+
+There are two other ways to trigger exceptions: The revert function can be used to flag an error and revert the current call. It is possible to provide a string message containing details about the error that will be passed back to the caller. The deprecated keyword throw can also be used as an alternative to revert() (but only without error message).
+
+有两种方式可能会触发异常：revert函数用来标记错误并恢复当前的调用。它会提供一个包含错误信息的字符串返回给调用者。被废弃的throw关键字可以作为revert的替代方案(但是只有在没有错误信息的时候才可以使用)。
+
+```
+Note
+
+From version 0.4.13 the throw keyword is deprecated and will be phased out in the future.
+
+从0.4.13版本开始throw关键字被废弃，将会正在未来的版本中淘汰。
+```
+
+When exceptions happen in a sub-call, they “bubble up” (i.e. exceptions are rethrown) automatically. Exceptions to this rule are send and the low-level functions call, delegatecall and callcode – those return false in case of an exception instead of “bubbling up”.
+
+当子调用发生异常，异常会自动冒泡(异常会再次抛出)。这条规则的例外就是send函数和一些低级函数call，delegatecall，callcode这些函数抛出异常时会返回false而不是向上冒泡。
+
+```
+Warning
+
+The low-level call, delegatecall and callcode will return success if the called account is non-existent, as part of the design of EVM. Existence must be checked prior to calling if desired.
+
+作为EVM设计机制的一部分，如果被调用账户不存在低级函数调用call，delegatecall，callcode会返回调用成功。因此，如果在调用之前必须先对账户进行存在性检查。
+```
+
+Catching exceptions is not yet possible.
+
+异常捕获暂时还不可以。
+
+In the following example, you can see how ‘require’ can be used to easily check conditions on inputs and how ‘assert’ can be used for internal error checking. Note that you can optionally provide a message string for ‘require’, but not for ‘assert’.
+
+在下面的例子中，你可以看到require函数可以很方便的对输入的条件进行检查，assert可以对内部错误进行检查。注意你可以为require提供一个错误信息，但是assert不可以。
+
+```
+pragma solidity ^0.4.22;
+
+contract Sharer {
+    function sendHalf(address addr) public payable returns (uint balance) {
+        require(msg.value % 2 == 0, "Even value required.");
+        uint balanceBeforeTransfer = this.balance;
+        addr.transfer(msg.value / 2);
+        // Since transfer throws an exception on failure and
+        // cannot call back here, there should be no way for us to
+        // still have half of the money.
+        // 一旦transfer函数抛出失败异常，这里又不能回调，我们就没办法保持一般的资金
+        assert(this.balance == balanceBeforeTransfer - msg.value / 2);
+        return this.balance;
+    }
+}
+```
+
+An assert-style exception is generated in the following situations:
+
+assert类型的异常信息会在以下情况下产生：
+
+    *   If you access an array at a too large or negative index (i.e. x[i] where i >= x.length or i < 0). 访问数组的索引越界，过大或者是负值
+    *   If you access a fixed-length bytesN at a too large or negative index. 访问固定大小byteN类型的数据，索引过大或者为负值
+    *   If you divide or modulo by zero (e.g. 5 / 0 or 23 % 0). 用0除一个数，或一个数对0取余
+    *   If you shift by a negative amount. 位移一个负数
+    *   If you convert a value too big or negative into an enum type. 将一个太大的值或负值转为枚举类型
+    *   If you call a zero-initialized variable of internal function type. 调用了处于函数类型缺省值状态下的函数
+    *   If you call assert with an argument that evaluates to false. 调用assert函数，并且断言结果返回false。
+
+A require-style exception is generated in the following situations:
+
+require类型的异常会在以下情况下产生：
+
+    *   Calling throw. 调用throw方法
+    *   Calling require with an argument that evaluates to false. 调用require方法，并且传入的参数评估结果为fasle
+    *   If you call a function via a message call but it does not finish properly (i.e. it runs out of gas, has no matching function, or throws an exception itself), except when a low level operation call, send, delegatecall or callcode is used. The low level operations never throw exceptions but indicate failures by returning false. 通过消息调用函数，但是不能正常完成(例如gas消耗完，没有找到对应的函数，或者它自身抛出异常)，除非使用了低级函数，send，delegatecall或callcode。低级操作符从来不会抛出异常，标示失败的方式是返回false。
+    *   If you create a contract using the new keyword but the contract creation does not finish properly (see above for the definition of “not finish properly”). 你用new关键字创建了一个合约，但是合约没有正常创建完成(查看上面没有正常完成的定义)。
+    *   If you perform an external function call targeting a contract that contains no code. 你执行的外部函数调用的目标合约没有包含代码。
+    *   If your contract receives Ether via a public function without payable modifier (including the constructor and the fallback function). 你的合约通过一个没有payable修饰符的公共函数接收了Ether。
+    *   If your contract receives Ether via a public getter function. 你的合约通过一个公共的getter函数接收了Ether。
+    *   If a .transfer() fails. 调用.transfer()函数失败。
+
+Internally, Solidity performs a revert operation (instruction 0xfd) for a require-style exception and executes an invalid operation (instruction 0xfe) to throw an assert-style exception. In both cases, this causes the EVM to revert all changes made to the state. The reason for reverting is that there is no safe way to continue execution, because an expected effect did not occur. Because we want to retain the atomicity of transactions, the safest thing to do is to revert all changes and make the whole transaction (or at least call) without effect. Note that assert-style exceptions consume all gas available to the call, while require-style exceptions will not consume any gas starting from the Metropolis release.
+
+在Solidity内部，对于require类型的异常执行恢复操作，对于assert类型的异常执行invalid操作。在两种情况下，都会导致EVM回滚所有的状态改变。因为期望的效果没有产生，继续执行会是一种不安全的方式，因此需要回滚所有的状态。由于我们要保留所有的原子交易信息，最安全的做法是回滚所有的改变使得所有的交易行为无效。注意，assert类型的异常会消耗所有可用的gas，而require类型的异常不会消耗任何gas。
+
+The following example shows how an error string can be used together with revert and require:
+
+下面的例子指出了在revert和require里的error信息怎么使用。
+
+```
+pragma solidity ^0.4.22;
+
+contract VendingMachine {
+    function buy(uint amount) payable {
+        if (amount > msg.value / 2 ether)
+            revert("Not enough Ether provided.");
+        // Alternative way to do it:
+        require(
+            amount <= msg.value / 2 ether,
+            "Not enough Ether provided."
+        );
+        // Perform the purchase.
+    }
+}
+```
+
+The provided string will be abi-encoded as if it were a call to a function Error(string). In the above example, revert("Not enough Ether provided."); will cause the following hexadecimal data be set as error return data:
+
+提供的字符串会被abi编码，就像被函数Error(string)调用一样。在上面的例子中，revert("Not enough Ether provided.");将会导致下面的十六进制数据作为error的data被设置
+
+```
+0x08c379a0                                                         // Function selector for Error(string)
+0x0000000000000000000000000000000000000000000000000000000000000020 // Data offset
+0x000000000000000000000000000000000000000000000000000000000000001a // String length
+0x4e6f7420656e6f7567682045746865722070726f76696465642e000000000000 // String data
+```
 
 
-####Scoping starting from Version 0.5.0
 
-##Error handling Assert,Require,Revert and Exceptions
+
+
+
+
+
+
+

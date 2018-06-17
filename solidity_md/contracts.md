@@ -365,6 +365,26 @@ contract Mutex {
 }
 ```
 
+Multiple modifiers are applied to a function by specifying them in a whitespace-separated list and are evaluated in the order presented.
+
+一个函数可以使用多个修饰符，中间使用空格隔开，它们将按照排列的顺序被使用。
+
+```
+Warning
+
+In an earlier version of Solidity, return statements in functions having modifiers behaved differently.
+
+在Solidity的早起版本中，函数返回状态中的修饰符具有不同的行为。
+```
+
+Explicit returns from a modifier or function body only leave the current modifier or function body. Return variables are assigned and control flow continues after the “ _ ” in the preceding modifier.
+
+修饰符和函数体的显式返回仅保留当前修饰符和函数体。返回变量被赋值，控制语句在前一个修饰符“ _ ”之后继续。
+
+Arbitrary expressions are allowed for modifier arguments and in this context, all symbols visible from the function are visible in the modifier. Symbols introduced in the modifier are not visible in the function (as they might change by overriding).
+
+任意的表达式都可以应用于修饰符的参数中，在上下文中，所有来自于函数的可见标识符在修饰符中也是可见的。在修饰符中引入的标识符，在函数中是不可见的，因为它们可以通过覆盖而改变。
+
 ##Constant State Variables
 
 ##Functions

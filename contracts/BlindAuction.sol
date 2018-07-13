@@ -22,7 +22,7 @@ pragma solidity >0.4.23 <0.5.0;
 
 contract BlindAuction {
 	struct Bid {
-		byte32 blindedBid;
+		bytes32 blindedBid;
 		uint deposit;
 	}
 
@@ -55,7 +55,7 @@ contract BlindAuction {
 		revealEnd = biddingEnd + _revealTime;
 	}
 
-	function bid(byte32 _blindedBid) public payable onlyBefore(biddingEnd){
+	function bid(bytes32 _blindedBid) public payable onlyBefore(biddingEnd){
 		bids[msg.sender].push(Bid({
 			blindedBid:_blindedBid,
 			deposit:msg.value

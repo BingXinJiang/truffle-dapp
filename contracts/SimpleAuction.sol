@@ -100,7 +100,7 @@ contract SImpleAuction {
 	/// Withdraw a bid that was overbid.
 	/// 撤销已投出的标
 	function withdraw() public returns(bool){
-		uint amount = pendingRetruns[msg.sender;
+		uint amount = pendingRetruns[msg.sender];
 		if(amount > 0){
 			// It is important to set this to zero because the recipient
             // can call this function again as part of the receiving call

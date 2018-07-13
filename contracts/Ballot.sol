@@ -57,7 +57,7 @@ contract Ballot {
 
 	//Create a new ballot to choose one of `proposalNames`.
 	//构造函数，初始化投票系统，初始化提案
-	function Ballot(bytes32[] proposalNames) public {
+	constructor(bytes32[] proposalNames) public {
 		chairperson = msg.sender;
 		voters[chairperson].weight = 1;
 

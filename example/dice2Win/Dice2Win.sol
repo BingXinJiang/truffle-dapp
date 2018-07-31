@@ -207,23 +207,27 @@ contract Dice2Win {
     //
     // Commit, being essentially random 256-bit number, is used as a unique bet identifier in
     // the 'bets' mapping.
+    // Commit 随机的256位数字，被用来作为投注映射的唯一标示。
     //
-    // Commits are signed with a block limit to ensure that they are used at most once - otherwise
-    // it would be possible for a miner to place a bet with a known commit/reveal pair and tamper
-    // with the blockhash. Croupier guarantees that commitLastBlock will always be not greater than
-    // placeBet block number plus BET_EXPIRATION_BLOCKS. See whitepaper for details.
+    // Commits are signed with a block limit to ensure that they are used at most once - otherwise it would be possible for a miner to place a bet with a known commit/reveal pair and tamper(篡改) with the blockhash.
+    //  commit被区块的限制注册以确保他们最多被使用一次，否则矿工可能使用已知的提交篡改区块哈希。
+    // Croupier(赌场上的总管人) guarantees that commitLastBlock will always be not greater than placeBet block number plus BET_EXPIRATION_BLOCKS. See whitepaper for details.
+    // 管理者确保‘commitLastBlock’总是不大于‘placeBet’区块的数量加上‘BET_EXPIRATION_BLOCKS’。
     function placeBet(uint betMask, uint modulo, uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external payable {
         // Check that the bet is in 'clean' state.
+        // 检测投注是否处在‘clean’状态。
         Bet storage bet = bets[commit];
         require (bet.gambler == address(0), "Bet should be in a 'clean' state.");
 
-        // Validate input data ranges.
+        // Validate(验证) input data ranges.
+        // 验证数据的范围
         uint amount = msg.value;
         require (modulo > 1 && modulo <= MAX_MODULO, "Modulo should be within range.");
         require (amount >= MIN_BET && amount <= MAX_AMOUNT, "Amount should be within range.");
         require (betMask > 0 && betMask < MAX_BET_MASK, "Mask should be within range.");
 
         // Check that commit is valid - it has not expired and its signature is valid.
+        // 验证提交是有效的，没有过期，并且签名有效。
         require (block.number <= commitLastBlock, "Commit has expired.");
         bytes32 signatureHash = keccak256(abi.encodePacked(uint40(commitLastBlock), commit));
         require (secretSigner == ecrecover(signatureHash, 27, r, s), "ECDSA signature is not valid.");
@@ -232,16 +236,18 @@ contract Dice2Win {
         uint mask;
 
         if (modulo <= MAX_MASK_MODULO) {
-            // Small modulo games specify bet outcomes via bit mask.
-            // rollUnder is a number of 1 bits in this mask (population count).
-            // This magic looking formula is an efficient way to compute population
-            // count on EVM for numbers below 2**40. For detailed proof consult
-            // the dice2.win whitepaper.
+            // Small modulo games specify bet outcomes via bit mask. 
+            // 小modulo游戏通过位掩码指定投注结果。
+            // rollUnder is a number of 1 bits in this mask (population count). 
+            // rollUnder是个一个字节的数字。
+            // This magic looking formula is an efficient way to compute population count on EVM for numbers below 2**40. 
+            // 这个看起来具有魔力的公式，
+            // For detailed proof consult the dice2.win whitepaper.
             rollUnder = ((betMask * POPCNT_MULT) & POPCNT_MASK) % POPCNT_MODULO;
             mask = betMask;
         } else {
-            // Larger modulos specify the right edge of half-open interval of
-            // winning bet outcomes.
+            // Larger modulos specify the right edge of half-open interval of winning bet outcomes.
+            // 较大的模数指定获胜投注结果的半开区间的右边缘。
             require (betMask > 0 && betMask <= modulo, "High modulo range, betMask larger than modulo.");
             rollUnder = betMask;
         }
@@ -253,6 +259,7 @@ contract Dice2Win {
         (possibleWinAmount, jackpotFee) = getDiceWinAmount(amount, modulo, rollUnder);
 
         // Enforce max profit limit.
+        // 最大盈利限制。
         require (possibleWinAmount <= amount + maxProfit, "maxProfit limit violation.");
 
         // Lock funds.
@@ -260,9 +267,11 @@ contract Dice2Win {
         jackpotSize += uint128(jackpotFee);
 
         // Check whether contract has enough funds to process this bet.
+        // 检测合约是否有足够的资金支持此次赌注。
         require (jackpotSize + lockedInBets <= address(this).balance, "Cannot afford to lose this bet.");
 
         // Store bet parameters on blockchain.
+        // 将投注的参数存储在区块链中。
         bet.amount = amount;
         bet.modulo = uint8(modulo);
         bet.rollUnder = uint8(rollUnder);
@@ -271,16 +280,19 @@ contract Dice2Win {
         bet.gambler = msg.sender;
     }
 
-    // Settlement transaction - can in theory be issued by anyone, but is designed to be
-    // handled by the dice2.win croupier bot. To settle a bet with a specific "commit",
-    // settleBet should supply a "reveal" number that would Keccak256-hash to
-    // "commit". clean_commit is some previously 'processed' bet, that will be moved into
-    // 'clean' state to prevent blockchain bloat and refund some gas.
+    // Settlement transaction - can in theory be issued by anyone, but is designed to be handled by the dice2.win croupier bot. 
+    // 结算交易--理论上可以被任何人发起，但是设计为只有dice2.win的管理员才才可以处理。
+    // To settle a bet with a specific "commit", settleBet should supply a "reveal" number that would Keccak256-hash to "commit". 
+    // 用一个特定的‘commit’来结算投注，结算投注需要提供一个‘reveal’数字。
+    // clean_commit is some previously 'processed' bet, that will be moved into 'clean' state to prevent blockchain bloat and refund some gas.
+    // ‘clean_commit’是一些先前被处理的投注，它们的状态会被置为‘chean’，以阻止区块链的膨胀，节约一些gas。
     function settleBet(uint reveal, uint cleanCommit) external {
         // "commit" for bet settlement can only be obtained by hashing a "reveal".
+        // 用来投注结算的提交只能被‘reveal’的hash包含。
         uint commit = uint(keccak256(abi.encodePacked(reveal)));
 
         // Fetch bet parameters into local variables (to save gas).
+        // 获取投注参数放入本地变量中。用来节约gas
         Bet storage bet = bets[commit];
         uint amount = bet.amount;
         uint modulo = bet.modulo;
@@ -289,19 +301,22 @@ contract Dice2Win {
         address gambler = bet.gambler;
 
         // Check that bet is in 'active' state.
+        // 检验投注是否处在活跃状态。
         require (amount != 0, "Bet should be in an 'active' state");
 
         // Check that bet has not expired yet (see comment to BET_EXPIRATION_BLOCKS).
+        // 检测投注是否过期
         require (block.number > placeBlockNumber, "settleBet in the same block as placeBet, or before.");
         require (block.number <= placeBlockNumber + BET_EXPIRATION_BLOCKS, "Blockhash can't be queried by EVM.");
 
         // Move bet into 'processed' state already.
+        // 将投注移动到已处理的状态
         bet.amount = 0;
 
-        // The RNG - combine "reveal" and blockhash of placeBet using Keccak256. Miners
-        // are not aware of "reveal" and cannot deduce it from "commit" (as Keccak256
-        // preimage is intractable), and house is unable to alter the "reveal" after
-        // placeBet have been mined (as Keccak256 collision finding is also intractable).
+        // The RNG - combine "reveal" and blockhash of placeBet using Keccak256. 
+        // Miners are not aware of "reveal" and cannot deduce it from "commit" (as Keccak256 preimage is intractable), and house is unable to alter the "reveal" after placeBet have been mined (as Keccak256 collision finding is also intractable).
+        // RNG - 将‘reveal’和投注的hash使用Keccak256结合在一起。
+        // 矿工对‘reveal’是无感的，并且不会从‘commit’中推断它。投注一旦被矿工记录后就不可以改变了。
         bytes32 entropy = keccak256(abi.encodePacked(reveal, blockhash(placeBlockNumber)));
 
         // Do a roll by taking a modulo of entropy. Compute winning amount.
@@ -361,11 +376,12 @@ contract Dice2Win {
         clearProcessedBet(cleanCommit);
     }
 
-    // Refund transaction - return the bet amount of a roll that was not processed in a
-    // due timeframe. Processing such blocks is not possible due to EVM limitations (see
-    // BET_EXPIRATION_BLOCKS comment above for details). In case you ever find yourself
-    // in a situation like this, just contact the dice2.win support, however nothing
-    // precludes you from invoking this method yourself.
+    // Refund transaction - return the bet amount of a roll that was not processed in a due timeframe. 
+    // 资金退回交易-退回没有在规定的时间内处理的交易金额。
+    // Processing such blocks is not possible due to EVM limitations (see BET_EXPIRATION_BLOCKS comment above for details). 
+    // 这类的交易区块由于EVM的限制，无法处理。
+    // In case you ever find yourself in a situation like this, just contact the dice2.win support, however nothing precludes you from invoking this method yourself.
+    // 在这种状态下，你会发现自己处在这样的状态中，
     function refundBet(uint commit) external {
         // Check that bet is in 'active' state.
         Bet storage bet = bets[commit];
@@ -390,7 +406,7 @@ contract Dice2Win {
         sendFunds(bet.gambler, amount, amount);
     }
 
-    // A helper routine to bulk clean the storage.
+    // A helper routine(常规、惯例) to bulk(大批) clean the storage.
     function clearStorage(uint[] cleanCommits) external {
         uint length = cleanCommits.length;
 
@@ -403,14 +419,12 @@ contract Dice2Win {
     function clearProcessedBet(uint commit) private {
         Bet storage bet = bets[commit];
 
-        // Do not overwrite active bets with zeros; additionally prevent cleanup of bets
-        // for which commit signatures may have not expired yet (see whitepaper for details).
+        // Do not overwrite active bets with zeros; additionally prevent cleanup of bets for which commit signatures may have not expired yet (see whitepaper for details).
         if (bet.amount != 0 || block.number <= bet.placeBlockNumber + BET_EXPIRATION_BLOCKS) {
             return;
         }
 
-        // Zero out the remaining storage (amount was zeroed before, delete would consume 5k
-        // more gas).
+        // Zero out the remaining storage (amount was zeroed before, delete would consume 5k more gas).
         bet.modulo = 0;
         bet.rollUnder = 0;
         bet.placeBlockNumber = 0;
@@ -418,7 +432,7 @@ contract Dice2Win {
         bet.gambler = address(0);
     }
 
-    // Get the expected win amount after house edge is subtracted.
+    // Get the expected win amount after house edge is subtracted(扣除).
     function getDiceWinAmount(uint amount, uint modulo, uint rollUnder) private pure returns (uint winAmount, uint jackpotFee) {
         require (0 < rollUnder && rollUnder <= modulo, "Win probability out of range.");
 

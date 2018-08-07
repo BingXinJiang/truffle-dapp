@@ -213,6 +213,15 @@ contract Dice2Win {
     //  commit被区块的限制注册以确保他们最多被使用一次，否则矿工可能使用已知的提交篡改区块哈希。
     // Croupier(赌场上的总管人) guarantees that commitLastBlock will always be not greater than placeBet block number plus BET_EXPIRATION_BLOCKS. See whitepaper for details.
     // 管理者确保‘commitLastBlock’总是不大于‘placeBet’区块的数量加上‘BET_EXPIRATION_BLOCKS’。
+    // 获取当前区块的number
+    function getNowBlockNumber() external returns(uint nowBlockNumber){
+        nowBlockNumber = block.number;
+    }
+    function getSecretHash(uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external returns(
+        
+        ){
+
+    }
     function placeBet(uint betMask, uint modulo, uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external payable {
         // Check that the bet is in 'clean' state.
         // 检测投注是否处在‘clean’状态。

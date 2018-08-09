@@ -217,10 +217,9 @@ contract Dice2Win {
     function getNowBlockNumber() external returns(uint nowBlockNumber){
         nowBlockNumber = block.number;
     }
-    function getSecretHash(uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external returns(
-        
-        ){
-
+    function getPlaceBetsNow() external returns(mapping (uint => Bet) myBets;
+    ){
+        myBets = bets;
     }
     function placeBet(uint betMask, uint modulo, uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external payable {
         // Check that the bet is in 'clean' state.

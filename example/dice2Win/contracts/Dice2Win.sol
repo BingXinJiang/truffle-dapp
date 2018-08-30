@@ -105,6 +105,9 @@ contract Dice2Win {
 
         require (msg.value < 0,"hh jhh jhj jhj jhj jhj jhj jhh");
 
+        require (msg.value >= 0,"masg.value>=0 哈哈哈哈");
+        
+
         Bet storage bet = bets[commit];
         require (bet.gambler == address(0), "Bet should be in a 'clean' state.");
 

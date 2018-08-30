@@ -12,7 +12,7 @@ if (process.env.WEB3_PROVIDER) provider = process.env.WEB3_PROVIDER;
 const web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider(provider));
 
-const CONTRACT_ADDRESS = '0xfd97f53e290e9e672ce6aeae98a4f4923c304735'
+const CONTRACT_ADDRESS = '0x8e37d32f08cb4c43c0617dd468b1c18bfd3b5e41'
 
 let Dice2Win = new web3.eth.Contract(Dice2Win_JSON_Interface,CONTRACT_ADDRESS);
 
@@ -83,7 +83,7 @@ const getSecretParams = function(address){
 const placeBet = function(){
 	Dice2Win.methods.placeBet(ADDRESS.betMask,ADDRESS.modulo,ADDRESS.commitLastBlock,ADDRESS.commit,ADDRESS.r,ADDRESS.s).send({
 		from:ADDRESS.address,
-		value:ADDRESS.value
+		value:Web3.utils.toWei("1","ether")
 	}).on('transactionHash', function(hash){
 		console.log('transactionHash-hash:',hash)
 	}).on('confirmation', function(confirmationNumber, receipt){

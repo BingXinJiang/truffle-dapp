@@ -1,37 +1,24 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 contract Dice2Win {
     
     uint constant HOUSE_EDGE_PERCENT = 1;
     uint constant HOUSE_EDGE_MINIMUM_AMOUNT = 0.0003 ether;
-
     uint constant MIN_JACKPOT_BET = 0.1 ether;
-
     uint constant JACKPOT_MODULO = 1000;
     uint constant JACKPOT_FEE = 0.001 ether;
-
     uint constant MIN_BET = 0.01 ether;
     uint constant MAX_AMOUNT = 300000 ether;
-
     uint constant MAX_MODULO = 100;
-
     uint constant MAX_MASK_MODULO = 40;
-
     uint constant MAX_BET_MASK = 2 ** MAX_MASK_MODULO;
-
     uint constant BET_EXPIRATION_BLOCKS = 250;
-
     address constant DUMMY_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
-
     address public owner;
     address private nextOwner;
-
     uint public maxProfit;
-
     address public secretSigner;
-
     uint128 public jackpotSize;
-
     uint128 public lockedInBets;
 
     struct Bet {
@@ -49,6 +36,7 @@ contract Dice2Win {
     event Payment(address indexed beneficiary, uint amount);
     event JackpotPayment(address indexed beneficiary, uint amount);
 
+    event Commit(uint commit);
     constructor () public {
         owner = msg.sender;
         secretSigner = DUMMY_ADDRESS;
@@ -98,16 +86,7 @@ contract Dice2Win {
         selfdestruct(owner);
     }
 
-    function getNowBlockNumber() external view returns(uint nowBlockNumber){
-        nowBlockNumber = block.number;
-    }
-    function placeBet(uint betMask, uint modulo, uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external payable {
-
-        require (msg.value < 0,"hh jhh jhj jhj jhj jhj jhj jhh");
-
-        require (msg.value >= 0,"masg.value>=0 哈哈哈哈");
-        
-
+   function placeBet(uint betMask, uint modulo, uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external payable {
         Bet storage bet = bets[commit];
         require (bet.gambler == address(0), "Bet should be in a 'clean' state.");
 
@@ -130,7 +109,7 @@ contract Dice2Win {
             require (betMask > 0 && betMask <= modulo, "High modulo range, betMask larger than modulo.");
             rollUnder = betMask;
         }
-        
+
         uint possibleWinAmount;
         uint jackpotFee;
 
@@ -143,6 +122,8 @@ contract Dice2Win {
 
         require (jackpotSize + lockedInBets <= address(this).balance, "Cannot afford to lose this bet.");
 
+        emit Commit(commit);
+
         bet.amount = amount;
         bet.modulo = uint8(modulo);
         bet.rollUnder = uint8(rollUnder);
@@ -151,25 +132,39 @@ contract Dice2Win {
         bet.gambler = msg.sender;
     }
 
-    function settleBet(uint reveal, uint cleanCommit) external {
+    function settleBet(uint reveal, bytes32 blockHash) external {
         uint commit = uint(keccak256(abi.encodePacked(reveal)));
 
         Bet storage bet = bets[commit];
-        uint amount = bet.amount;
-        uint modulo = bet.modulo;
-        uint rollUnder = bet.rollUnder;
         uint placeBlockNumber = bet.placeBlockNumber;
-        address gambler = bet.gambler;
-
-        require (amount != 0, "Bet should be in an 'active' state");
 
         require (block.number > placeBlockNumber, "settleBet in the same block as placeBet, or before.");
         require (block.number <= placeBlockNumber + BET_EXPIRATION_BLOCKS, "Blockhash can't be queried by EVM.");
+        require (blockhash(placeBlockNumber) == blockHash);
 
+        settleBetCommon(bet, reveal, blockHash);
+    }
+
+    function settleBetUncleMerkleProof(uint reveal, uint40 canonicalBlockNumber) external {
+        uint commit = uint(keccak256(abi.encodePacked(reveal)));
+        Bet storage bet = bets[commit];
+        require (block.number <= canonicalBlockNumber + BET_EXPIRATION_BLOCKS, "Blockhash can't be queried by EVM.");
+        requireCorrectReceipt(4 + 32 + 32 + 4);
+        bytes32 canonicalHash;
+        bytes32 uncleHash;
+        (canonicalHash, uncleHash) = verifyMerkleProof(commit, 4 + 32 + 32);
+        require (blockhash(canonicalBlockNumber) == canonicalHash);
+        settleBetCommon(bet, reveal, uncleHash);
+    }
+
+    function settleBetCommon(Bet storage bet, uint reveal, bytes32 entropyBlockHash) private {
+        uint amount = bet.amount;
+        uint modulo = bet.modulo;
+        uint rollUnder = bet.rollUnder;
+        address gambler = bet.gambler;
+        require (amount != 0, "Bet should be in an 'active' state");
         bet.amount = 0;
-
-        bytes32 entropy = keccak256(abi.encodePacked(reveal, blockhash(placeBlockNumber)));
-
+        bytes32 entropy = keccak256(abi.encodePacked(reveal, entropyBlockHash));
         uint dice = uint(entropy) % modulo;
 
         uint diceWinAmount;
@@ -178,41 +173,27 @@ contract Dice2Win {
 
         uint diceWin = 0;
         uint jackpotWin = 0;
-
         if (modulo <= MAX_MASK_MODULO) {
             if ((2 ** dice) & bet.mask != 0) {
                 diceWin = diceWinAmount;
             }
-
         } else {
             if (dice < rollUnder) {
                 diceWin = diceWinAmount;
             }
-
         }
-
         lockedInBets -= uint128(diceWinAmount);
-
         if (amount >= MIN_JACKPOT_BET) {
             uint jackpotRng = (uint(entropy) / modulo) % JACKPOT_MODULO;
-
             if (jackpotRng == 0) {
                 jackpotWin = jackpotSize;
                 jackpotSize = 0;
             }
         }
-
         if (jackpotWin > 0) {
             emit JackpotPayment(gambler, jackpotWin);
         }
-
         sendFunds(gambler, diceWin + jackpotWin == 0 ? 1 wei : diceWin + jackpotWin, diceWin);
-
-        if (cleanCommit == 0) {
-            return;
-        }
-
-        clearProcessedBet(cleanCommit);
     }
 
     function refundBet(uint commit) external {
@@ -220,9 +201,7 @@ contract Dice2Win {
         uint amount = bet.amount;
 
         require (amount != 0, "Bet should be in an 'active' state");
-
         require (block.number > bet.placeBlockNumber + BET_EXPIRATION_BLOCKS, "Blockhash can't be queried by EVM.");
-
         bet.amount = 0;
 
         uint diceWinAmount;
@@ -231,30 +210,7 @@ contract Dice2Win {
 
         lockedInBets -= uint128(diceWinAmount);
         jackpotSize -= uint128(jackpotFee);
-
         sendFunds(bet.gambler, amount, amount);
-    }
-
-    function clearStorage(uint[] cleanCommits) external {
-        uint length = cleanCommits.length;
-
-        for (uint i = 0; i < length; i++) {
-            clearProcessedBet(cleanCommits[i]);
-        }
-    }
-
-    function clearProcessedBet(uint commit) private {
-        Bet storage bet = bets[commit];
-
-        if (bet.amount != 0 || block.number <= bet.placeBlockNumber + BET_EXPIRATION_BLOCKS) {
-            return;
-        }
-
-        bet.modulo = 0;
-        bet.rollUnder = 0;
-        bet.placeBlockNumber = 0;
-        bet.mask = 0;
-        bet.gambler = address(0);
     }
 
     function getDiceWinAmount(uint amount, uint modulo, uint rollUnder) private pure returns (uint winAmount, uint jackpotFee) {
@@ -283,4 +239,130 @@ contract Dice2Win {
     uint constant POPCNT_MULT = 0x0000000000002000000000100000000008000000000400000000020000000001;
     uint constant POPCNT_MASK = 0x0001041041041041041041041041041041041041041041041041041041041041;
     uint constant POPCNT_MODULO = 0x3F;
+
+    function verifyMerkleProof(uint seedHash, uint offset) pure private returns (bytes32 blockHash, bytes32 uncleHash) {
+        uint scratchBuf1;  assembly { scratchBuf1 := mload(0x40) }
+
+        uint uncleHeaderLength; uint blobLength; uint shift; uint hashSlot;
+
+        for (;; offset += blobLength) {
+            assembly { blobLength := and(calldataload(sub(offset, 30)), 0xffff) }
+            if (blobLength == 0) {
+                break;
+            }
+
+            assembly { shift := and(calldataload(sub(offset, 28)), 0xffff) }
+            require (shift < blobLength, "Shift bounds check.");
+
+            offset += 4;
+            assembly { hashSlot := calldataload(add(offset, shift)) }
+            require (hashSlot == 0, "Non-empty hash slot.");
+
+            assembly {
+                calldatacopy(scratchBuf1, offset, blobLength)
+                mstore(add(scratchBuf1, shift), seedHash)
+                seedHash := sha3(scratchBuf1, blobLength)
+                uncleHeaderLength := blobLength
+            }
+        }
+        uncleHash = bytes32(seedHash);
+        uint scratchBuf2 = scratchBuf1 + uncleHeaderLength;
+        uint unclesLength; assembly { unclesLength := and(calldataload(sub(offset, 28)), 0xffff) }
+        uint unclesShift;  assembly { unclesShift := and(calldataload(sub(offset, 26)), 0xffff) }
+        require (unclesShift < unclesLength, "Shift bounds check.");
+
+        offset += 6;
+        assembly { calldatacopy(scratchBuf2, offset, unclesLength) }
+        memcpy(scratchBuf2 + unclesShift, scratchBuf1, uncleHeaderLength);
+
+        assembly { seedHash := sha3(scratchBuf2, unclesLength) }
+
+        offset += unclesLength;
+
+        assembly {
+            blobLength := and(calldataload(sub(offset, 30)), 0xffff)
+            shift := and(calldataload(sub(offset, 28)), 0xffff)
+        }
+        require (shift < blobLength, "Shift bounds check.");
+
+        offset += 4;
+        assembly { hashSlot := calldataload(add(offset, shift)) }
+        require (hashSlot == 0, "Non-empty hash slot.");
+
+        assembly {
+            calldatacopy(scratchBuf1, offset, blobLength)
+            mstore(add(scratchBuf1, shift), seedHash)
+            blockHash := sha3(scratchBuf1, blobLength)
+        }
+    }
+
+    function requireCorrectReceipt(uint offset) view private {
+        uint leafHeaderByte; assembly { leafHeaderByte := byte(0, calldataload(offset)) }
+
+        require (leafHeaderByte >= 0xf7, "Receipt leaf longer than 55 bytes.");
+        offset += leafHeaderByte - 0xf6;
+
+        uint pathHeaderByte; assembly { pathHeaderByte := byte(0, calldataload(offset)) }
+
+        if (pathHeaderByte <= 0x7f) {
+            offset += 1;
+
+        } else {
+            require (pathHeaderByte >= 0x80 && pathHeaderByte <= 0xb7, "Path is an RLP string.");
+            offset += pathHeaderByte - 0x7f;
+        }
+
+        uint receiptStringHeaderByte; assembly { receiptStringHeaderByte := byte(0, calldataload(offset)) }
+        require (receiptStringHeaderByte == 0xb9, "Receipt string is always at least 256 bytes long, but less than 64k.");
+        offset += 3;
+
+        uint receiptHeaderByte; assembly { receiptHeaderByte := byte(0, calldataload(offset)) }
+        require (receiptHeaderByte == 0xf9, "Receipt is always at least 256 bytes long, but less than 64k.");
+        offset += 3;
+
+        uint statusByte; assembly { statusByte := byte(0, calldataload(offset)) }
+        require (statusByte == 0x1, "Status should be success.");
+        offset += 1;
+
+        uint cumGasHeaderByte; assembly { cumGasHeaderByte := byte(0, calldataload(offset)) }
+        if (cumGasHeaderByte <= 0x7f) {
+            offset += 1;
+
+        } else {
+            require (cumGasHeaderByte >= 0x80 && cumGasHeaderByte <= 0xb7, "Cumulative gas is an RLP string.");
+            offset += cumGasHeaderByte - 0x7f;
+        }
+
+        uint bloomHeaderByte; assembly { bloomHeaderByte := byte(0, calldataload(offset)) }
+        require (bloomHeaderByte == 0xb9, "Bloom filter is always 256 bytes long.");
+        offset += 256 + 3;
+
+        uint logsListHeaderByte; assembly { logsListHeaderByte := byte(0, calldataload(offset)) }
+        require (logsListHeaderByte == 0xf8, "Logs list is less than 256 bytes long.");
+        offset += 2;
+
+        uint logEntryHeaderByte; assembly { logEntryHeaderByte := byte(0, calldataload(offset)) }
+        require (logEntryHeaderByte == 0xf8, "Log entry is less than 256 bytes long.");
+        offset += 2;
+
+        uint addressHeaderByte; assembly { addressHeaderByte := byte(0, calldataload(offset)) }
+        require (addressHeaderByte == 0x94, "Address is 20 bytes long.");
+
+        uint logAddress; assembly { logAddress := and(calldataload(sub(offset, 11)), 0xffffffffffffffffffffffffffffffffffffffff) }
+        require (logAddress == uint(address(this)));
+    }
+
+    function memcpy(uint dest, uint src, uint len) pure private {
+        for(; len >= 32; len -= 32) {
+            assembly { mstore(dest, mload(src)) }
+            dest += 32; src += 32;
+        }
+
+        uint mask = 256 ** (32 - len) - 1;
+        assembly {
+            let srcpart := and(mload(src), not(mask))
+            let destpart := and(mload(dest), mask)
+            mstore(dest, or(destpart, srcpart))
+        }
+    }
 }

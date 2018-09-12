@@ -39,7 +39,7 @@ let ADDRESS_1 = {
 	secret:'0xe53362cb0367d6334c8d2c9fe3c21586e655e7a84fc41b5a9d106d569d0560d1',
 	betMask:1,
 	modulo:2,
-	commitLastBlock:100,
+	commitLastBlock:26,
 	commit:1,
 	value:'100000000000000000'
 }
@@ -48,7 +48,7 @@ let ADDRESS_2 = {
 	secret:'0xd118388b79b8b5598bb9a6ae9d8af6392dbea1ca89dd6da3fd23f29704016a47',
 	betMask:1,
 	modulo:2,
-	commitLastBlock:100,
+	commitLastBlock:26,
 	commit:1,
 	value:'100000000000000000'
 }
@@ -57,7 +57,7 @@ let ADDRESS_3 = {
 	secret:'0xc85999e17cb597dd1d744218f69a5d2f09f86aba9e50c7a35d75606f8928402e',
 	betMask:1,
 	modulo:2,
-	commitLastBlock:100,
+	commitLastBlock:26,
 	commit:1,
 	value:'100000000000000000'
 }
@@ -66,7 +66,7 @@ let ADDRESS_4 = {
 	secret:'0x75738dd24256a5f58e2aedd619c5cad790fb231f90f4d3757172c7bad122b395',
 	betMask:1,
 	modulo:2,
-	commitLastBlock:100,
+	commitLastBlock:26,
 	commit:1,
 	value:'100000000000000000'
 }
@@ -81,7 +81,8 @@ const getSecretParams = function(address){
 
 /**下注 调用合约的 placeBet 函数 */
 const placeBet = function(){
-	Dice2Win.methods.placeBet(ADDRESS.betMask,ADDRESS.modulo,ADDRESS.commitLastBlock,ADDRESS.commit,ADDRESS.r,ADDRESS.s).send({
+	Dice2Win.methods.placeBet(ADDRESS.betMask,ADDRESS.modulo,ADDRESS.commitLastBlock,ADDRESS.commit,ADDRESS.r,ADDRESS.s)
+	.send({
 		from:ADDRESS.address,
 		value:Web3.utils.toWei("1","ether")
 	}).on('transactionHash', function(hash){
@@ -97,8 +98,7 @@ const placeBet = function(){
 }
 
 setSecretSigner(newSecretSigner_1, function(){
-	getSecretParams(ADDRESS_3)
-	console.log(ADDRESS)
+	getSecretParams(ADDRESS_1)
 	placeBet()
 })
 

@@ -85,43 +85,185 @@ DNN's​ ​mission​ ​is​ ​to​ ​create​ ​political​ ​news​
 
 ###How the Blockchain Can Help?
 
-The​ ​Decentralized​ ​News​ ​Network​ ​will​ ​introduce​ ​a​ ​compensation​ ​model​ ​built​ ​on​ ​incentives​ ​and made​ ​possible​ ​by​ ​the​ ​Ethereum​ ​blockchain.​ ​DNN​ ​removes​ ​the​ ​need​ ​for​ ​advertisers​ ​because​ ​the platform​ ​will​ ​not​ ​source​ ​revenue​ ​from​ ​display​ ​ads.​ ​DNN​ ​will​ ​run​ ​as​ ​a​ ​network,​ ​fueled​ ​by​ ​the​ ​DNN token.​ ​Each​ ​action,​ ​which​ ​includes​ ​the​ ​writing​ ​and​ ​reviewing​ ​of​ ​an​ ​article,​ ​will​ ​be​ ​made​ ​possible by​ ​these​ ​tokens​ ​and​ ​linked​ ​to​ ​the​ ​Ethereum​ ​network.​ ​DNN’s​ ​system​ ​works​ ​to​ ​incentivize​ ​writers and​ ​reviewers,​ ​in​ ​a​ ​self-sustaining​ ​and​ ​autonomous​ ​environment​ ​that​ ​leaves​ ​no​ ​room​ ​for corporate​ ​bias.​ ​Compensation​ ​is​ ​derived​ ​from​ ​the​ ​community’s​ ​engagement,​ ​rather​ ​than​ ​external revenue​ ​streams​ ​such​ ​as​ ​native​ ​ads.​ ​In​ ​turn,​ ​there​ ​is​ ​no​ ​opportunity​ ​for​ ​corporate​ ​interjection, whether​ ​it​ ​is​ ​through​ ​sponsored​ ​content​ ​or​ ​elsewhere.
+The​ ​Decentralized​ ​News​ ​Network​ ​will​ ​introduce​ ​a​ ​compensation​(补偿) ​model​ ​built​ ​on​ ​incentives​(激励) ​and made​ ​possible​ ​by​ ​the​ ​Ethereum​ ​blockchain.​ ​DNN通过以太坊建立了一个激励模式。
+DNN​ ​removes​ ​the​ ​need​ ​for​ ​advertisers​ ​because​ ​the platform​ ​will​ ​not​ ​source​ ​revenue​ ​from​ ​display​ ​ads.​ ​
+DNN移除了对广告的需求。
+DNN​ ​will​ ​run​ ​as​ ​a​ ​network,​ ​fueled​(加燃料) ​by​ ​the​ ​DNN token.​ ​
+DNN将运行一个以DNN驱动的网络。
+Each​ ​action,​ ​which​ ​includes​ ​the​ ​writing​ ​and​ ​reviewing​ ​of​ ​an​ ​article,​ ​will​ ​be​ ​made​ ​possible by​ ​these​ ​tokens​ ​and​ ​linked​ ​to​ ​the​ ​Ethereum​ ​network.​ ​
+每一个写作或者阅读的行为都会依赖这些token和以太坊网络连接起来。
+DNN’s​ ​system​ ​works​ ​to​ ​incentivize​(激励) ​writers and​ ​reviewers,​ ​in​ ​a​ ​self-sustaining​(自立的) and​ ​autonomous​(自治的) ​environment​ ​that​ ​leaves​ ​no​ ​room​ ​for corporate​(公司的，企业的) ​bias(偏见).​ ​
+DNN的系统创建一种自治的环境来激励作者和阅读者，没有给企业留下任何后门。
+Compensation​(补偿) ​is​ ​derived​ ​from​ ​the​ ​community’s​ ​engagement(约定),​ ​rather​ ​than​ ​external revenue​ ​streams​ ​such​ ​as​ ​native​ ​ads.​ ​
+补偿依赖于社区的约定，而不是外部的收入，例如广告。
+In​ ​turn,​ ​there​ ​is​ ​no​ ​opportunity​ ​for​ ​corporate​ ​interjection, whether​ ​it​ ​is​ ​through​ ​sponsored​(赞助，发起) ​content​ ​or​ ​elsewhere.
+反过来，公司没有任何机会插入，发起人和其他任何机构都不可以。
 
-Furthermore,​ ​with​ ​the​ ​blockchain​ ​providing​ ​the​ ​foundation​ ​for​ ​the​ ​platform,​ ​DNN​ ​can​ ​transparently display​ ​how​ ​money​ ​is​ ​made​ ​and​ ​transacted​ ​behind​ ​the​ ​scenes,​ ​and​ ​for​ ​what​ ​reasons​ ​and​ ​to which​ ​parties​ ​tokens​ ​are​ ​distributed.​ ​Ideally,​ ​the​ ​platform​ ​can​ ​create​ ​a​ ​new​ ​kind​ ​of​ ​transparency, dictated​ ​by​ ​a​ ​truly​ ​open​ ​and​ ​contributor-controlled​ ​environment​ ​for​ ​information​ ​sharing​ ​and consumption.​ ​By​ ​persisting​ ​the​ ​contents​ ​of​ ​published​ ​articles​ ​to​ ​a​ ​decentralized​ ​file​ ​datastore, and​ ​making​ ​references​ ​to​ ​these​ ​articles​ ​directly​ ​in​ ​ethereum​ ​smart​ ​contracts,​ ​we​ ​can​ ​ensure​ ​that every​ ​article​ ​is​ ​as​ ​immutable​ ​and​ ​everlasting​ ​as​ ​the​ ​ethereum​ ​network.
+Furthermore,​ ​with​ ​the​ ​blockchain​ ​providing​ ​the​ ​foundation​ ​for​ ​the​ ​platform,​ ​DNN​ ​can​ ​transparently(明显的) display​ ​how​ ​money​ ​is​ ​made​ ​and​ ​transacted​(交易) ​behind​ ​the​ ​scenes,​ ​and​ ​for​ ​what​ ​reasons​ ​and​ ​to which​ ​parties​ ​tokens​ ​are​ ​distributed(分散的).​ 
+更进一步，根据区块链提供的基础平台，DNN可以透明的展示在各种场景下交易转移了多少资金，是为了什么，哪些机构的token被分散了。
+​Ideally(理念上的),​ ​the​ ​platform​ ​can​ ​create​ ​a​ ​new​ ​kind​ ​of​ ​transparency, dictated​(口述的) ​by​ ​a​ ​truly​ ​open​ ​and​ ​contributor-controlled​ ​environment​ ​for​ ​information​ ​sharing​ ​and consumption(消费).​ ​
+理论上来说，平台创建了一个真正公开并由贡献者管控的的信息分享与消费的透明的环境。
+By​ ​persisting​ ​the​ ​contents​ ​of​ ​published​ ​articles​ ​to​ ​a​ ​decentralized​ ​file​ ​datastore, and​ ​making​ ​references​ ​to​ ​these​ ​articles​ ​directly​ ​in​ ​ethereum​ ​smart​ ​contracts,​ ​we​ ​can​ ​ensure​ ​that every​ ​article​ ​is​ ​as​ ​immutable​ ​and​ ​everlasting​ ​as​ ​the​ ​ethereum​ ​network.
+通过持久化发布的内容，并把它分发到一个分布式的数据库中，把这些文章直接指向以太坊的智能合约中，我们可以确保每一篇文章都是永久不变的。
 
-A​ ​blockchain-based​ ​news​ ​media​ ​platform​ ​such​ ​as​ ​DNN’s​ ​has​ ​the​ ​ability​ ​to​ ​democratize​ ​traditional news​ ​media​ ​for​ ​several​ ​reasons:
+A​ ​blockchain-based​ ​news​ ​media​ ​platform​ ​such​ ​as​ ​DNN’s​ ​has​ ​the​ ​ability​ ​to​ ​democratize​(使民主化) ​traditional news​ ​media​ ​for​ ​several​ ​reasons:
+以区块链为基础的新闻平台例如DNN，有能力让传统的新闻媒体变得民主化，有以下几条理由：
 
-Since​ ​the​ ​blockchain​ ​contains​ ​data​ ​in​ ​time-stamped​ ​blocks​ ​that​ ​chain​ ​together,​ ​being continuously​ ​added​ ​and​ ​archived,​ ​it​ ​becomes​ ​nearly​ ​impossible​ ​for​ ​outsiders​ ​to​ ​manipulate existing​ ​data​ ​or​ ​information​ ​within​ ​the​ ​distributed​ ​ledger.
+Since​ ​the​ ​blockchain​ ​contains​ ​data​ ​in​ ​time-stamped​ ​blocks​ ​that​ ​chain​ ​together,​ ​being continuously​(连续不断地) ​added​ ​and​ ​archived,​ ​it​ ​becomes​ ​nearly​ ​impossible​ ​for​ ​outsiders​ ​to​ ​manipulate(操纵，篡改) existing​ ​data​ ​or​ ​information​ ​within​ ​the​ ​distributed​ ​ledger.
+由于区块链打包了连续不断的时间戳，使得外部者对已经存在的数据的篡改变得几乎不可能。
 
-Next,​ ​the​ ​blockchain​ ​decentralizes​ ​authority​ ​to​ ​publish​ ​content​ ​on​ ​DNN.​ ​There​ ​is​ ​no​ ​single​ ​source that​ ​controls​ ​the​ ​message​ ​and​ ​feel​ ​of​ ​published​ ​works,​ ​which​ ​is​ ​something​ ​that​ ​is​ ​all​ ​too commonly​ ​witnessed​ ​with​ ​traditional​ ​media.​ ​DNN​ ​is​ ​not​ ​tethered​ ​to​ ​any​ ​special​ ​interests​ ​or political​ ​agendas,​ ​nor​ ​is​ ​it​ ​vying​ ​for​ ​a​ ​substantial​ ​chunk​ ​of​ ​ad​ ​revenue,​ ​which​ ​put​ ​it​ ​in​ ​a​ ​category separate​ ​from​ ​most​ ​publications​ ​that​ ​are​ ​tied​ ​down​ ​to​ ​a​ ​bigger​ ​entity.
-
-Lastly,​ ​the​ ​blockchain’s​ ​core​ ​value​ ​rests​ ​on​ ​trust.​ ​The​ ​technology​ ​achieves​ ​a​ ​state​ ​of​ ​implicit​ ​trust, thereby​ ​securing​ ​a​ ​system​ ​where​ ​contributors​ ​don’t​ ​need​ ​to​ ​know​ ​one​ ​another​ ​or​ ​be​ ​associated with​ ​a​ ​third-party​ ​intermediary​ ​to​ ​verify​ ​or​ ​confirm​ ​a​ ​transaction.​ ​It​ ​is​ ​implicit​ ​and​ ​autonomous- blockchain​ ​is​ ​the​ ​gatekeeper​ ​and​ ​enabler​ ​of​ ​all​ ​contributors’​ ​incentives​ ​on​ ​DNN.
+Next,​ ​the​ ​blockchain​ ​decentralizes​(分散化的) ​authority​(权利) ​to​ ​publish​ ​content​ ​on​ ​DNN.​ ​
+再者，区块链将在DNN上发布内容的权利分散化。
+There​ ​is​ ​no​ ​single​ ​source that​ ​controls​ ​the​ ​message​ ​and​ ​feel​ ​of​ ​published​ ​works,​ ​which​ ​is​ ​something​ ​that​ ​is​ ​all​ ​too commonly​(一般的) ​witnessed​(目击者) ​with​ ​traditional​ ​media.​
+没有任何一个单一渠道可以控制发布工作的进行，
+DNN​ ​is​ ​not​ ​tethered​(系，栓) ​to​ ​any​ ​special​ ​interests​ ​or political​ ​agendas(议程),​ ​nor​ ​is​ ​it​ ​vying​(竞争) ​for​ ​a​ ​substantial​(大量的) ​chunk​ ​of​ ​ad​ ​revenue,​ ​which​ ​put​ ​it​ ​in​ ​a​ ​category separate​ ​from​ ​most​ ​publications​ ​that​ ​are​ ​tied​ ​down​ ​to​ ​a​ ​bigger​ ​entity.
+DNN不会被任何特殊利益或者政治议程束缚，
+Lastly,​ ​the​ ​blockchain’s​ ​core​ ​value​ ​rests​ ​on​ ​trust.​ ​
+最后，区块链的核心价值在于信任。
+The​ ​technology​ ​achieves​ ​a​ ​state​ ​of​ ​implicit​(含蓄的) ​trust, thereby​ ​securing​ ​a​ ​system​ ​where​ ​contributors​ ​don’t​ ​need​ ​to​ ​know​ ​one​ ​another​ ​or​ ​be​ ​associated with​ ​a​ ​third-party​ ​intermediary​ ​to​ ​verify​ ​or​ ​confirm​ ​a​ ​transaction.​
+技术达到了一种信任状态，在这种状态下贡献者不需要知道另外一个人的信息，也不需要第三方机构的确认就可以确认交易。
+It​ ​is​ ​implicit​(含蓄的，暗示的，盲从的) ​and​ ​autonomous(自治的) blockchain​ ​is​ ​the​ ​gatekeeper​(门禁) ​and​ ​enabler​(促成者) ​of​ ​all​ ​contributors’​ ​incentives​(激励) ​on​ ​DNN.
 
 ###Why is DNN Necessary?
 
-The​ ​concept​ ​of​ ​decentralized​ ​news​ ​itself​ ​is​ ​not​ ​new.​ ​There​ ​were​ ​startups,​ ​like​ ​the​ ​now​ ​defunct Reported.ly​ ​(which​ ​lost​ ​funding​ ​due​ ​to​ ​lack​ ​of​ ​revenue),​ ​that​ ​have​ ​dabbled​ ​in​ ​community​ ​driven, Internet-based​ ​news​ ​reporting,​ ​and​ ​dissemination.10
+The​ ​concept​(概念) ​of​ ​decentralized​ ​news​ ​itself​ ​is​ ​not​ ​new.​ ​
+There​ ​were​ ​startups,​ ​like​ ​the​ ​now​ ​defunct(死的) Reported.ly​ ​(which​ ​lost​ ​funding​ ​due​ ​to​ ​lack​ ​of​ ​revenue(收益)),​ ​that​ ​have​ ​dabbled​(涉猎) ​in​ ​community​ ​driven, Internet-based​ ​news​ ​reporting,​ ​and​ ​dissemination(宣传，散播).10
 
-The​ ​idea​ ​is​ ​that​ ​if​ ​news​ ​distribution​ ​were​ ​to​ ​function​ ​without​ ​any​ ​central​ ​authority,​ ​less​ ​importance would​ ​reside​ ​on​ ​media​ ​titans​ ​and​ ​there​ ​would​ ​exist​ ​a​ ​higher​ ​degree​ ​of​ ​autonomy​ ​and independence​ ​from​ ​the​ ​bottom-up,​ ​starting​ ​with​ ​journalists​ ​and​ ​ending​ ​at​ ​readers.
+The​ ​idea​ ​is​ ​that​ ​if​ ​news​ ​distribution​ ​were​ ​to​ ​function​ ​without​ ​any​ ​central​ ​authority,​ ​less​ ​importance would​ ​reside​ ​on​ ​media​ ​titans​ ​and​ ​there​ ​would​ ​exist​ ​a​ ​higher​ ​degree​ ​of​ ​autonomy​(自治) ​and independence​ ​from​ ​the​ ​bottom-up,​ ​starting​ ​with​ ​journalists​ ​and​ ​ending​ ​at​ ​readers.
 
-Distributors​ ​of​ ​news​ ​can​ ​act​ ​as​ ​nimble​ ​vessels​ ​for​ ​disseminating​ ​accurate​ ​information​ ​without​ ​any overseers​ ​but​ ​the​ ​community​ ​they​ ​serve,​ ​leading​ ​to​ ​greater​ ​integrity​ ​and​ ​a​ ​fearlessness​ ​to​ ​report.
+Distributors​ ​of​ ​news​ ​can​ ​act​ ​as​ ​nimble​(敏捷的) ​vessels​(船舶) ​for​ ​disseminating​(传播) ​accurate​(精确地) ​information​ ​without​ ​any overseers​(监督人) ​but​ ​the​ ​community​ ​they​ ​serve,​ ​leading​ ​to​ ​greater​ ​integrity​(完整) ​and​ ​a​ ​fearlessness​(勇敢) ​to​ ​report.
 
 At​ ​the​ ​end​ ​of​ ​the​ ​cycle,​ ​readers​ ​can​ ​focus​ ​on​ ​the​ ​content​ ​—​ ​the​ ​news​ ​—​ ​free​ ​of​ ​corporate influence​ ​and​ ​more​ ​transparent​ ​because​ ​of​ ​the​ ​power​ ​and​ ​function​ ​of​ ​blockchain​ ​technology.
 
-Transparency​ ​in​ ​news​ ​can​ ​make​ ​way​ ​for​ ​a​ ​more​ ​democratic​ ​and​ ​freer​ ​thinking​ ​press.
+Transparency​ ​in​ ​news​ ​can​ ​make​ ​way​ ​for​ ​a​ ​more​ ​democratic​(民主的) ​and​ ​freer​ ​thinking​ ​press.
 
-In​ ​addition,​ ​suppression​ ​of​ ​information​ ​and​ ​mass​ ​censorship,​ ​by​ ​governments​ ​and​ ​corporations, is​ ​a​ ​threat​ ​to​ ​publishers​ ​and​ ​writers​ ​throughout​ ​the​ ​world.​ ​A​ ​gag​ ​order​ ​is​ ​a​ ​common​ ​tool​ ​used​ ​by governments​ ​to​ ​restrict​ ​publishers​ ​from​ ​disclosing​ ​certain​ ​details,​ ​regardless​ ​of​ ​how​ ​factual​ ​those details​ ​may​ ​be.
-
-The​ ​people​ ​have​ ​a​ ​right​ ​to​ ​the​ ​facts​ ​and​ ​the​ ​truth.​ ​The​ ​core​ ​purpose​ ​of​ ​DNN​ ​is​ ​to​ ​provide​ ​truly factual​ ​news​ ​that​ ​is​ ​curated​ ​and​ ​community-moderated.
+In​ ​addition,​ ​suppression​(抑制) ​of​ ​information​ ​and​ ​mass​ ​censorship(审查机构),​ ​by​ ​governments​ ​and​ ​corporations, is​ ​a​ ​threat​ ​to​ ​publishers​ ​and​ ​writers​ ​throughout​ ​the​ ​world.​ ​
+另一方面，政府或者打的机构对信息的控制是对发布者和作者的一个威胁。
+A​ ​gag​(钳制…的言论) ​order​ ​is​ ​a​ ​common​ ​tool​ ​used​ ​by governments​ ​to​ ​restrict​(限制，约束) ​publishers​ ​from​ ​disclosing​(公开) ​certain​ ​details,​ ​regardless​ ​of​ ​how​ ​factual​ ​those details​ ​may​ ​be.
+对言论的控制是政府常用的工具，用来限制发布者公开特定的细节，而不考虑这些细节的真实性。
+The​ ​people​ ​have​ ​a​ ​right​ ​to​ ​the​ ​facts​ ​and​ ​the​ ​truth.​ ​
+人们有权利知道这些事实和真相。
+The​ ​core​ ​purpose​ ​of​ ​DNN​ ​is​ ​to​ ​provide​ ​truly factual​ ​news​ ​that​ ​is​ ​curated​(管理) ​and​ ​community-moderated.
 
 ###How Will DNN Work?
+Overview​ ​of​ ​key​ ​actors​ ​on​ ​the​ ​network
+
+DNN​ ​is​ ​a​ ​decentralized​ ​platform​ ​built​ ​on​ ​top​ ​of​ ​the​ ​Ethereum​ ​blockchain,​ ​that​ ​allows​ ​anyone​ ​to submit​ ​articles​ ​that​ ​will​ ​be​ ​reviewed​ ​by​ ​a​ ​handful​(少数) ​of​ ​quasi-selected​ ​and​ ​anonymous​(匿名的) ​contributors that​ ​coordinate​(协调) ​without​ ​trust.​ 
+DNN是建立在以太坊区块链上的分布式平台，它允许任何人在平台上提交文章。由少数被选择的匿名贡献者进行review。
+​During​ ​review,​ ​contributors​ ​check​ ​articles​ ​to​ ​ensure​ ​that​ ​they​ ​are​ ​in accordance​(一致，和谐) ​with​ ​the​ ​network’s​ ​public​ ​set​ ​of​ ​editorial​(社论) ​standards.​ ​
+contributors需要确保文章和网络公开的标准保持一致。
+Each​ ​piece​ ​of​ ​news​ ​published​ ​on DNN​ ​is​ ​replicated​(重复的) ​across​ ​a​ ​series​ ​of​ ​community-hosted​ ​nodes​ ​and​ ​made​ ​available​ ​to​ ​the​ ​public. 
+每一个新闻的发布都需要经过社区主要节点的的反复确认，确保是可以发布的。
+Readers,​ ​writers,​ ​reviewers,​ ​and​ ​publishers​ ​earn​ ​tokens​ ​in​ ​proportion​(比例) ​to​ ​the​ ​amount​ ​of​ ​positive contributions​ ​they​ ​make​ ​to​ ​the​ ​platform.
+读者、作者、复查者和发布者按照他们对平台的贡献获取token。
+DNN​ ​is​ ​comprised​(由...组成) ​of​ ​four​ ​types​ ​of​ ​actors​ ​that​ ​each​ ​have​ ​key​ ​roles​ ​and​ ​contributions​ ​that​ ​together, make​ ​up​ ​the​ ​underlying​ ​functions​ ​and​ ​framework​ ​of​ ​the​ ​network:
+DNN由四中类型的行为者构成，
+
 ####Writers
+Writers,​ ​or​ ​reporters,​ ​are​ ​individuals​ ​who​ ​submit​ ​political​ ​content​ ​in​ ​the​ ​form​ ​of​ ​articles.​ ​
+作者或者说是报告者，作为独立的个体提供内容。
+Whether freelance​(自由作家) ​journalist,​ ​casual​(非正式) ​blogger,​ ​or​ ​an​ ​average​ ​consumer​ ​of​ ​global​ ​news,​ ​anyone​ ​can contribute​ ​to​ ​the​ ​DNN.
+无论是自由新闻从业者，非职业博主，或者全球新闻的日常消费者，都可以成为DNN的贡献者。
+
+However,​ ​since​ ​anyone​ ​can​ ​submit​ ​articles​ ​to​ ​DNN,​ ​getting​ ​published​ ​is​ ​not​ ​guaranteed.
+然而，由于每个人都向DNN提交新闻，就使得发布变得不能保证。
+
+To​ ​increase​ ​the​ ​chance​ ​of​ ​getting​ ​published​ ​writers​ ​should​ ​ensure​ ​that​ ​they​ ​closely​ ​comply​(遵守) ​with the​ ​DNN​ ​content​ ​guidelines​ ​to​ ​mitigate​(使...缓和) ​the​ ​chance​ ​of​ ​reviewers​ ​rejecting​ ​their​ ​piece​ ​due​ ​to infractions(违反).
+为了提升被发布的机会，作者应该他们自己严格遵守DNN的指导，使复查者拒绝他们内容的可能变得更低。
+
+The​ ​DNN​ ​content​ ​guidelines​ ​are​ ​a​ ​set​ ​of​ ​agreed-upon​ ​best​ ​practices​ ​for​ ​constructing​ ​political pieces​ ​that​ ​are​ ​both​ ​comprehensive​(专业综合检验) ​in​ ​scope​(范围) ​and​ ​that​ ​convey​(输送) ​the​ ​facts​ ​clearly​ ​and​ ​concisely(简洁的). 
+
+Articles​ ​that​ ​are​ ​submitted​ ​to​ ​DNN​ ​go​ ​through​ ​a​ ​series​ ​of​ ​stages​ ​before​ ​being​ ​submitted.​ ​Please refer​ ​to​ ​​Figure​ ​1​.
+文章被提交之前会经过一系列的状态改变。
+
 ####Reviewers
+Reviewers,​ ​or​ ​editors,​ ​read​ ​and​ ​vote​ ​upon​ ​submitted​ ​articles​ ​before​ ​an​ ​article​ ​is​ ​available​ ​for public​ ​consumption​(消耗) ​on​ ​the​ ​DNN’s​ ​article​ ​feed.​ 
+复查者对于提交的内容在可以发布之前进行阅读和投票。
+​The​ ​review​ ​process​ ​includes​ ​basic​ ​tasks​ ​such​ ​as noting​ ​grammatical​(语法) ​errors,​ ​pointing​ ​out​ ​inaccuracies​(误差) ​and​ ​questionable​ ​statements,​ ​as​ ​well​ ​as content​ ​classification.
+复查的过程包括最基本的语法检查，指出问题，和对内容进行分类
+
+Most​ ​important,​ ​however,​ ​is​ ​that​ ​reviewers​ ​ensure​ ​articles​ ​adhere​(依附) ​to​ ​the​ ​DNN​ ​content​ ​guidelines.
+最重要的是，复查者要确保文章符合DNN的指导。
+
+Reviewers​ ​do​ ​not​ ​have​ ​the​ ​ability​ ​to​ ​modify​ ​articles,​ ​but​ ​rather​ ​can​ ​accept​ ​(i.e.​ ​vote​ ​to​ ​have content​ ​published)​ ​or​ ​reject​ ​(i.e.​ ​vote​ ​to​ ​prevent​ ​content​ ​from​ ​being​ ​published)​ ​any​ ​written​ ​piece. 
+复查者不能修改文章，但是可以拒绝或者接受任何作者的发布请求。
+To​ ​make​ ​sure​ ​that​ ​no​ ​single​ ​reviewer​ ​has​ ​the​ ​final​ ​say​ ​on​ ​whether​ ​or​ ​not​ ​an​ ​article​ ​should​ ​be publicly​ ​incorporated​(合并) ​into​ ​the​ ​network,​ ​the​ ​network​ ​will​ ​assign​ ​seven​ ​random​ ​reviewers​ ​to​ ​validate(验证) the​​ article.​​
+为了确保不会有单一复查者对文章有最终决定权，网络会随机挑选七个复查者对文章进行验证。
+The​​ seven​​ reviewers​​ are​​ chosen​​ in​​ a​​ process​​ called​​ the​ R​​eview​​ Selection​​ Bid​,​​as​​ seen in​ ​​Figure​ ​2​.
+挑选七个复查者的过程被称为 R​​eview​​ Selection​​ Bid​。
+
+All​ ​seven​ ​reviewers​ ​are​ ​completely​ ​unaware​ ​of​ ​one​ ​another’s​ ​identities(身份);​ ​they​ ​vote​ ​and​ ​leave feedback​ ​in​ ​complete​ ​isolation​(隔离) ​to​ ​avoid​ ​groupthink​(集体审议) ​or​ ​any​ ​form​ ​of​ ​collusion(共谋).
+所有七个复查者对其他的复查者身份完全是无感的，他们的投票和反馈是完全隔离的以避免任何形式的共谋。
+
 ####Readers
+Readers​ ​are​ ​news​ ​consumers.​ ​
+Readers​ ​can​ ​comment,​ ​add​ ​notes,​ ​share,​ ​tip,​ ​bookmark​ ​articles​ ​of interest,​ ​and​ ​denote​(指示) ​articles​ ​they​ ​deem​(认为) ​questionable.​ ​
+读者可以评论，添加备注，分享，建议，对喜欢的文章添加标签，并且可以指出文章中有问题的地方。
+Unlike​ ​readers​ ​on​ ​traditional​ ​news platforms,​ ​readers​ ​on​ ​DNN​ ​play​ ​an​ ​active​ ​role​ ​in​ ​helping​ ​to​ ​shape​ ​the​ ​news​ ​they​ ​read,​ ​which includes​ ​participating​ ​in​ ​​Reader​ ​Suggestions​​ ​whereby​(凭借) ​article​ ​topics​ ​are​ ​put​ ​forward​ ​by​ ​you,​ ​the news​ ​consumer.​​ ​
+不像传统的新闻平台，DNN的读者对塑造他们阅读的新闻扮演着活跃的角色，
+Readers​ ​pay​ ​for​ ​access​ ​in​ ​DNN​ ​tokens.​ ​
+As​ ​Ethereum​ ​continues​ ​to​ ​improve, scalability​(可扩展性) ​with​ ​additions​ ​like​ ​sharding,​ ​state​ ​channels,​ ​and​ ​plasma,​ ​an​ ​ideal​ ​way​ ​to​ ​implement​ ​a subscription​ ​model,​ ​a​ ​pay-per-article​ ​model,​ ​or​ ​a​ ​combination​ ​of​ ​the​ ​two​ ​will​ ​be​ ​explored.
+
 ####Publishers
+Unlike​ ​readers,​ ​reviewers,​ ​and​ ​writers​ ​who​ ​are​ ​human​ ​actors​ ​of​ ​the​ ​network,​ ​publishers​ ​are​ ​server nodes​ ​which​ ​act​ ​as​ ​a​ ​proxy​ ​between​ ​human​ ​contributors​ ​and​ ​the​ ​DNN​ ​network​ ​residing​ ​on​ ​the Ethereum​ ​blockchain.
+和读者、复查者、作者不一样，发布者是介于人类贡献者和DNN网络之间的服务节点。
+
+Specialized​ ​open​ ​source​ ​software​ ​consisting​ ​of​ ​the​ ​complete​ ​DNN​ ​contributor-interface​ ​and network​ ​interface,​ ​is​ ​bundled​ ​and​ ​installed​ ​on​ ​each​ ​publisher.​ ​
+特定的包含所有DNN发布接口和网络接口的开源软件被安装在每个发布节点上。
+Publisher​ ​nodes​ ​are​ ​responsible​(可靠地) ​for replicating​(复制) ​published​ ​articles​ ​and​ ​ensuring​ ​that​ ​the​ ​DNN​ ​network​ ​remains​ ​available​ ​in​ ​the​ ​face​ ​of coordinated​(调节) ​attacks.
+发布节点有责任复制发布的文章并且确保DNN的网络在面对攻击的时候仍然可用。
+
+Publisher​ ​nodes​ ​communicate​ ​with​ ​one​ ​another​ ​through​ ​a​ ​peer-to-peer​ ​protocol​ ​that​ ​makes​ ​use of​ ​the​ ​same​ ​cryptography(密码学) ​behind​ ​Bitcoin​ ​and​ ​Ethereum.​ ​
+发布节点之间以p2p协议进行交流，和比特币以太坊使用同样的密码学原理。
+Using​ ​this​ ​peer-to-peer​ ​protocol, publishers​ ​are​ ​able​ ​to​ ​relay​(转播) ​details​ ​about​ ​their​ ​state​ ​to​ ​nearby​(附近) ​node​ ​hosts.
+使用这种p2p协议，发布者可以转播它们的主机状态。
+
+The​ ​main​ ​purpose​ ​for​ ​publishers​ ​is​ ​to​ ​provide​ ​an​ ​attack​ ​resistant​ ​transport​ ​for​ ​the​ ​DNN​ ​software, rather​ ​than​ ​host​ ​the​ ​DNN​ ​software​ ​on​ ​a​ ​centralized​ ​server,​ ​which​ ​introduces​ ​a​ ​significant​(重大的，有意义的) ​point​ ​of failure.
+发布者的主要意图是为DNN软件提供一种交易攻击守护，而不是作为DNN软件的一种中心化服务。
+
+Storing​ ​DNN’s​ ​software​ ​on​ ​a​ ​decentralized​ ​network​ ​also​ ​allows​ ​the​ ​community​ ​to​ ​run​ ​and​ ​manage it​ ​without​ ​the​ ​need​ ​for​ ​an​ ​external​ ​facilitator​(服务商) ​or​ ​trusted​ ​intermediary(中间，媒介).
+
 ###Overview of DNN Token Economy
+Brief​ ​Introduction​ ​to​ ​token​ ​economy
+
+Tokens​ ​are​ ​a​ ​core​ ​component​ ​of​ ​decentralized​ ​platforms​ ​like​ ​DNN.​ ​In​ ​DNN’s​ ​case,​ ​tokens​ ​serve two​ ​purposes:​ ​​to​ ​reward​ ​for​ ​contributions,​​ ​and​ ​to​ ​​carry​ ​out​ ​actions​.​ ​For​ ​people​ ​who​ ​are​ ​new​ ​to cryptocurrency​ ​platforms​ ​like​ ​Ethereum,​ ​the​ ​idea​ ​of​ ​dealing​ ​with​ ​tokens​ ​may​ ​seem​ ​a​ ​bit far-fetched​ ​and​ ​unnecessary.​ ​To​ ​most​ ​people,​ ​the​ ​immediate​ ​benefit​ ​of​ ​using​ ​tokens​ ​will​ ​not​ ​be​ ​as apparent​ ​as​ ​using​ ​a​ ​more​ ​ubiquitous​ ​fiat​ ​based​ ​currency​ ​like​ ​the​ ​US​ ​Dollar.​ ​As​ ​a​ ​result,​ ​it​ ​quite common​ ​for​ ​people​ ​to​ ​ask​ ​questions​ ​such​ ​as:​ ​how​ ​can​ ​I​ ​use​ ​tokens​ ​to​ ​pay​ ​for​ ​real-world​ ​things? Where​ ​exactly​ ​do​ ​tokens​ ​come​ ​from?​ ​How​ ​do​ ​tokens​ ​get​ ​their​ ​value?​ ​To​ ​answer​ ​these​ ​questions, a​ ​deeper​ ​understanding​ ​about​ ​what​ ​tokens​ ​are​ ​and​ ​how​ ​they​ ​work​ ​in​ ​the​ ​context​ ​of​ ​a decentralized​ ​network,​ ​will​ ​first​ ​need​ ​to​ ​be​ ​acquired.
+
+Broadly​ ​speaking,​ ​tokens​ ​are​ ​digital​ ​keys​ ​that​ ​grant​ ​access​ ​to​ ​a​ ​particular​ ​service​ ​or​ ​resource, which​ ​has​ ​been​ ​made​ ​possible​ ​by​ ​the​ ​technology​ ​that​ ​enables​ ​the​ ​Ethereum​ ​blockchain.
+
+Depending​ ​on​ ​the​ ​platform,​ ​the​ ​amount​ ​of​ ​tokens​ ​that​ ​are​ ​available​ ​can​ ​be​ ​fixed​ ​or​ ​infinite,​ ​each of​ ​which​ ​affects​ ​the​ ​value​ ​of​ ​a​ ​token.
+
+To​ ​better​ ​conceptualize​ ​tokens,​ ​think​ ​of​ ​them​ ​as​ ​you​ ​would​ ​seat​ ​tickets​ ​at​ ​a​ ​sports​ ​game.​ ​Tickets enable​ ​you​ ​to​ ​reserve​ ​access​ ​to​ ​an​ ​available​ ​seat​ ​(i.e.​ ​interact​ ​or​ ​gain​ ​access​ ​to​ ​the​ ​event).​ ​Put another​ ​way,​ ​for​ ​every​ ​available​ ​seat​ ​in​ ​the​ ​arena,​ ​there​ ​will​ ​be​ ​one​ ​ticket​ ​accompanying​ ​it. Depending​ ​on​ ​where​ ​the​ ​event​ ​takes​ ​place,​ ​the​ ​tickets​ ​will​ ​be​ ​priced​ ​in​ ​a​ ​local​ ​fiat​ ​currency​ ​(e.g. USD​ ​or​ ​EUR).​ ​A​ ​person​ ​who​ ​has​ ​a​ ​ticket​ ​is​ ​free​ ​to​ ​sell​ ​their​ ​ticket​ ​for​ ​a​ ​price​ ​that​ ​is​ ​greater​ ​than​ ​or less​ ​than​ ​the​ ​going​ ​rate.​ ​Since​ ​tickets​ ​are​ ​limited,​ ​the​ ​cost​ ​of​ ​the​ ​ticket​ ​will​ ​increase​ ​as​ ​less​ ​tickets become​ ​available.
+
+In​ ​the​ ​same​ ​way​ ​tickets​ ​give​ ​you​ ​access​ ​to​ ​seats​ ​in​ ​a​ ​sports​ ​arena,​ ​tokens​ ​enable​ ​you​ ​to​ ​interact with​ ​various​ ​aspects​ ​of​ ​the​ ​network.​ ​Tokens​ ​can​ ​also​ ​be​ ​sold​ ​or​ ​exchanged​ ​with​ ​other​ ​people who​ ​would​ ​also​ ​like​ ​access​ ​to​ ​the​ ​DNN​ ​network​ ​—​ ​much​ ​in​ ​the​ ​same​ ​way​ ​sports​ ​tickets​ ​or​ ​any scarce​ ​asset​ ​can​ ​be​ ​sold​ ​or​ ​exchanged
+
 ###Roles of the DNN and DCC Tokens
+The​ ​DNN​ ​platform​ ​consists​ ​of​ ​two​ ​types​ ​of​ ​tokens:​ ​​DNN​​ ​and​ ​​DCC​.​ ​Both​ ​tokens​ ​have​ ​unique
+usages​ ​on​ ​the​ ​platform​ ​and​ ​can​ ​be​ ​obtained​ ​in​ ​different​ ​ways.
+
 ####DNN Token
+The​ ​DNN​ ​token​ ​is​ ​the​ ​primary​ ​instrument​ ​of​ ​value​ ​that​ ​can​ ​be​ ​earned​ ​or​ ​used​ ​to​ ​carry​ ​out​ ​actions on​ ​the​ ​platform.​ ​To​ ​enable​ ​the​ ​ability​ ​to​ ​price​ ​actions​ ​(such​ ​as​ ​reader​ ​tips​ ​to​ ​writers​ ​or​ ​reader subscriptions)​ ​on​ ​a​ ​micro​ ​scale,​ ​the​ ​DNN​ ​token​ ​will​ ​be​ ​divisible​ ​by​ ​up​ ​to​ ​3​ ​decimal​ ​places.​ ​DNN tokens​ ​can​ ​be​ ​​obtained​​ ​in​ ​the​ ​following​ ​way:​ ​Earn​ ​it​ ​by​ ​contributing​ ​to​ ​the​ ​network.
+
+DNN​ ​tokens​ ​are​ ​used​ ​for​ ​a​ ​variety​ ​of​ ​things​ ​within​ ​the​ ​DNN​ ​network​ ​depending​ ​on​ ​the​ ​role​ ​the contributor​ ​chooses​ ​to​ ​take​ ​on.
+
+For​ ​example,​ ​writers​ ​use​ ​DNN​ ​tokens​ ​to​ ​pay​ ​for​ ​the​ ​Writer​ ​Fee​ ​associated​ ​with​ ​submitting​ ​their article​ ​to​ ​the​ ​network.​ ​Once​ ​an​ ​article​ ​has​ ​been​ ​accepted,​ ​writers​ ​can​ ​earn​ ​DNN​ ​tokens​ ​through the​ ​engagement​ ​generated​ ​by​ ​their​ ​article.
+
+Reviewers,​ ​on​ ​the​ ​other​ ​hand,​ ​earn​ ​DNN​ ​tokens​ ​by​ ​determining​ ​whether​ ​an​ ​article​ ​should​ ​be accepted​ ​or​ ​rejected​ ​by​ ​the​ ​network.
+
+Similarly,​ ​publishers​ ​earn​ ​DNN​ ​tokens​ ​by​ ​hosting​ ​nodes​ ​on​ ​the​ ​network.​ ​Each​ ​time​ ​a​ ​review​ ​has completed,​ ​publishers​ ​will​ ​be​ ​entitled​ ​to​ ​a​ ​small​ ​portion​ ​of​ ​tokens.
+
+Moreover,​ ​readers​ ​require​ ​DNN​ ​tokens​ ​to​ ​interact​ ​with​ ​articles,​ ​in​ ​the​ ​form​ ​of​ ​viewing, commenting,​ ​liking,​ ​​ ​and​ ​tipping​ ​writers.
+
+The​ ​following​ ​diagram​ ​explains​ ​how​ ​DNN​ ​tokens​ ​are​ ​used,​ ​and​ ​distributed,​ ​based​ ​on​ ​the​ ​types​ ​of actions​ ​carried​ ​out​ ​by​ ​each​ ​user​ ​role​ ​on​ ​the​ ​DNN​ ​platform.
 ####DNN Contribution Coupon Token
+The​ ​DNN​ ​Contribution​ ​Coupon​ ​token​ ​(or​ ​simply​ ​“DCC​ ​token”)​ ​is​ ​an​ ​instrument​ ​of​ ​accounting, which​ ​helps​ ​facilitate​ ​the​ ​distribution​ ​of​ ​DNN​ ​tokens​ ​while​ ​maintaining​ ​the​ ​overall​ ​stability​ ​of​ ​the DNN​ ​token​ ​price.
+
+DCC​ ​tokens​ ​live​ ​exclusively​ ​on​ ​the​ ​DNN​ ​platform​ ​and​ ​have​ ​an​ ​unlimited​ ​supply​ ​governed​ ​by​ ​the network.
+
+Writers,​ ​reviewers,​ ​and​ ​publishers​ ​are​ ​capable​ ​of​ ​earning​ ​DCC​ ​at​ ​the​ ​conclusion​ ​of​ ​the​ ​review process.​ ​The​ ​review​ ​process​ ​is​ ​considered​ ​to​ ​be​ ​finished​ ​when​ ​each​ ​reviewer​ ​has​ ​voted.​ ​The amount​ ​of​ ​DCC​ ​a​ ​contributor​​ ​​can​ ​earn​ ​is​ ​determined​ ​by​ ​the​ ​types​ ​of​ ​contributions​ ​they​ ​make​ ​to the​ ​network,​ ​(and​ ​in​ ​the​ ​case​ ​of​ ​reviewers,​ ​how​ ​many​ ​DNN​ ​tokens​ ​they​ ​bid​ ​during​ ​the​ ​reviewer selection​ ​bid).
+
+The​ ​payout​ ​of​ ​tokens​ ​is​ ​structured​ ​in​ ​a​ ​way​ ​that​ ​rewards​ ​the​ ​actions​ ​that​ ​ensure​ ​the​ ​articles​ ​in​ ​the feed​ ​remain​ ​as​ ​factual​ ​as​ ​possible​ ​and​ ​consistent​ ​with​ ​the​ ​platform’s​ ​Content​ ​Guidelines.
+
+DCC​ ​tokens​ ​have​ ​no​ ​value​ ​on​ ​the​ ​platform,​ ​and​ ​only​ ​serve​ ​as​ ​an​ ​indication​ ​of​ ​entitlement​ ​to​ ​a portion​ ​of​ ​the​ ​DNN​ ​tokens​ ​available​ ​for​ ​distribution.​ ​As​ ​mentioned​ ​prior,​ ​DNN​ ​tokens​ ​can​ ​be​ ​spent in​ ​a​ ​variety​ ​of​ ​ways​ ​within​ ​the​ ​platform.​ ​DNN​ ​tokens​ ​that​ ​do​ ​not​ ​get​ ​immediately​ ​transferred​ ​to writers​ ​in​ ​the​ ​form​ ​of​ ​tips,​ ​get​ ​sent​ ​to​ ​a​ ​DNN​ ​tokens​ ​pool​ ​called​ ​the​ ​Reward​ ​Pool​ ​(refer​ ​to​ ​the section​ ​​Reward​ ​Pool​​ ​for​ ​an​ ​in-depth​ ​explanation).
 ###SUBJECTIVE​ ​MINING​ ​DCC​ ​TOKENS
 ###REWARD​ ​POOL
 

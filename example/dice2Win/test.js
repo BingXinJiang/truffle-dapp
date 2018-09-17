@@ -12,7 +12,7 @@ if (process.env.WEB3_PROVIDER) provider = process.env.WEB3_PROVIDER;
 const web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider(provider));
 
-const CONTRACT_ADDRESS = '0x8e37d32f08cb4c43c0617dd468b1c18bfd3b5e41'
+const CONTRACT_ADDRESS = '0x7fb7ea53e43eede24a0665266b057fb256f6624a'
 
 let Dice2Win = new web3.eth.Contract(Dice2Win_JSON_Interface,CONTRACT_ADDRESS);
 
@@ -97,10 +97,10 @@ const placeBet = function(){
 	})
 }
 
-setSecretSigner(newSecretSigner_1, function(){
-	getSecretParams(ADDRESS_1)
-	placeBet()
-})
+// setSecretSigner(newSecretSigner_1, function(){
+// 	getSecretParams(ADDRESS_1)
+// 	placeBet()
+// })
 
 
 

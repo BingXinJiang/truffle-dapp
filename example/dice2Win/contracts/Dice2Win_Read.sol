@@ -2,62 +2,114 @@ pragma solidity ^0.4.24;
 
 /**
 What is provably fair on-chain gambling?
-Simply put, provably fair means that any bet outcome can be independently verified and that the operator or other players have no means of tampering with the result.
+Simply put, provably fair means that any bet outcome can be independently verified 
+and that the operator or other players have no means of tampering with the result.
 
 Is dice2.win provably fair?
-Yes. The whole gameplay is controlled by Ethereum Smart Contract that computes random numbers based on operator inputs and blockchain data (block hashes). Any party can audit(审计) the contract as well as inspect(检查) any transaction to make sure that neither dice2.win nor malicious(恶意的) players are influencing the results.
+Yes. The whole gameplay is controlled by Ethereum Smart Contract that computes 
+random numbers based on operator inputs and blockchain data (block hashes). 
+Any party can audit(审计) the contract as well as inspect(检查) any transaction to 
+make sure that neither dice2.win nor malicious(恶意的) players are influencing the results.
 
 How are you different from the other gambling sites?
-Placing a bet on dice2.win has much lower transaction fee compared to competing websites − this allows supporting bets as low as 0.01 ETH. Our games are very simple & easily understandable, just like tossing a coin or rolling a dice.
+Placing a bet on dice2.win has much lower transaction fee compared to competing 
+websites − this allows supporting bets as low as 0.01 ETH. Our games are very 
+simple & easily understandable, just like tossing a coin or rolling a dice.
 
 And, of course, we have jackpot(累积赌注)!
 
 Is there any catch? Explain how it works like I'm five.
 This is where we have to get a bit technical:
-dice2.win picks a secret random number and provides you with its hash.//根据随机数，获得一个hash
-You send your bet in Ethereum transaction to our smart contract along with the hash from previous step.//将投注和hash一块发送给合约
-At this point dice2.win has already commited to a number, prior to you chosing an outcome.
-Once your transaction is confirmed by the network, the contract stores the hash and bet details.
-Our croupier(赌场上的总管理人) bot "reveals"(暴露) the number by sending a bet settling transaction.//合约发送交易
-The contract accepts the transaction if and only if the hash of provided number is the same as the stored one.//验证交易
-The contract mixes the number and block hash of the bet transaction to get a random number.
-The contract decides whether you won or lost and sends you the winning amount of Ether.//判断结果
-Can dice2.win tamper(篡改) with the results? Nope, as the contract keeps track of secret number's hash, meaning the operator cannot change the number after the bet has been accepted. Mixing the block hash with the numbers makes the result totally random yet disallows miners from crafting winning bets. On the other hand, dice2.win themselves cannot control bet outcomes either because of block hash component. 
-This is a well-known "commitment scheme"(零知识协议) which enables dice2.win to provide gambling-grade random number generation allowing for big bets, jackpots and quick settlements while being fully transparent.//理论基础，零知识协议
+dice2.win picks a secret random number and provides you with its hash.
+//根据随机数，获得一个hash
+You send your bet in Ethereum transaction to our smart contract along with the 
+hash from previous step.//将投注和hash一块发送给合约
+At this point dice2.win has already commited to a number, prior to you chosing an 
+outcome.
+Once your transaction is confirmed by the network, the contract stores the hash 
+and bet details.
+Our croupier(赌场上的总管理人) bot "reveals"(暴露) the number by sending a bet settling 
+transaction.//合约发送交易
+The contract accepts the transaction if and only if the hash of provided number 
+is the same as the stored one.//验证交易
+The contract mixes the number and block hash of the bet transaction to get a 
+random number.
+The contract decides whether you won or lost and sends you the winning 
+amount of Ether.//判断结果
+Can dice2.win tamper(篡改) with the results? Nope, as the contract keeps track 
+of secret number's hash, meaning the operator cannot change the number after 
+the bet has been accepted. Mixing the block hash with the numbers makes the 
+result totally random yet disallows miners from crafting winning bets. 
+On the other hand, dice2.win themselves cannot control bet outcomes either 
+because of block hash component. 
+This is a well-known "commitment scheme"(零知识协议) which enables dice2.win 
+to provide gambling-grade random number generation allowing for big bets, 
+jackpots and quick settlements while being fully transparent.//理论基础，零知识协议
 
 What if I want to really verify that everything you say is actually true?
-Feel free to study our Smart Contract - it's available on Github. In case you have any questions or hesitations(犹豫), drop us a line via Telegram, Twitter or e-mail.
+Feel free to study our Smart Contract - it's available on Github. In case 
+you have any questions or hesitations(犹豫), drop us a line via Telegram, 
+Twitter or e-mail.
 
 What are the fees?
-Every bet is deducted(扣除) 1% (but no less than 0.0003 ETH) in favour of the dice2.win (to help us pay the bills and keep the game running) and 0.001 ETH more gets accumulated(累积) in the jackpot for bets of 0.1 ETH and up (which also makes these bets participate in jackpot!)
+Every bet is deducted(扣除) 1% (but no less than 0.0003 ETH) in favour of 
+the dice2.win (to help us pay the bills and keep the game running) and 0.001 
+ETH more gets accumulated(累积) in the jackpot for bets of 0.1 ETH and 
+up (which also makes these bets participate in jackpot!)
 
 
 1. What is provably fair on-chain gambling?
-Simply put, provably fair means that any bet outcome can be independently verified and that the operator or other players have no means of tampering(贿赂) with the result.
+Simply put, provably fair means that any bet outcome can be independently 
+verified and that the operator or other players have no means of tampering(贿赂) 
+with the result.
 
 2. Is dice2.win provably fair?
-Yes. The whole gameplay is controlled by Ethereum Smart Contract that computes random numbers based on operator inputs and blockchain data (block hashes). Any party can audit(审计) the contract as well as inspect(检查) any transaction to make sure that neither dice2.win nor malicious(恶意的)) players are influencing the results.
+Yes. The whole gameplay is controlled by Ethereum Smart Contract that computes 
+random numbers based on operator inputs and blockchain data (block hashes). 
+Any party can audit(审计) the contract as well as inspect(检查) any transaction 
+to make sure that neither dice2.win nor malicious(恶意的)) players are 
+influencing the results.
 //随机数来自于操作者的输入
 
 3. How are you different from the other gambling sites?
-Placing a bet on dice2.win has much lower transaction fee compared to competing websites — this allows supporting bets as low as 0.01 ETH. Our games are very simple & easily understandable, just like tossing a coin or rolling a dice. And, of course, we have jackpot!
+Placing a bet on dice2.win has much lower transaction fee compared to 
+competing websites — this allows supporting bets as low as 0.01 ETH. 
+Our games are very simple & easily understandable, just like tossing a 
+coin or rolling a dice. And, of course, we have jackpot!
 
 4. Is there any catch? 
 Explain how it works like I’m five. This is where we have to get a bit technical:
     : dice2.win picks a secret random number and provides you with its hash.
-    : You send your bet in Ethereum transaction to our smart contract along with the hash from previous step.
-    : At this point dice2.win has already commited to a number, prior to you chosing an outcome.
+    : You send your bet in Ethereum transaction to our smart contract 
+    along with the hash from previous step.
+    : At this point dice2.win has already commited to a number, prior to you 
+    chosing an outcome.
     : Once your transaction is confirmed by the network, the
     : Our croupier bot "reveals" the number by sending a bet settling transaction.
-    : The contract accepts the transaction if and only if the hash of provided number is the same as the stored one.
-    : The contract mixes the number and block hash of the bet transaction to get a random number.
-    : The contract decides whether you won or lost and sends you the winning amount of Ether. Can dice2.win tamper with the results? Nope, as the contract keeps track of secret number’s hash, meaning the operator cannot change the number after the bet has been accepted. Mixing the block hash with the numbers makes the result totally random yet disallows miners from crafting winning bets. On the other hand, dice2.win themselves cannot control bet outcomes either because of block hash component. This is a well-known "commitment scheme" which enables dice2.win to provide gambling-grade random number generation allowing for big bets, jackpots and quick settlements while being fully transparent.
+    : The contract accepts the transaction if and only if the hash of provided 
+    number is the same as the stored one.
+    : The contract mixes the number and block hash of the bet transaction to 
+    get a random number.
+    : The contract decides whether you won or lost and sends you the winning 
+    amount of Ether. Can dice2.win tamper with the results? Nope, as the contract 
+    keeps track of secret number’s hash, meaning the operator cannot change the 
+    number after the bet has been accepted. Mixing the block hash with the 
+    numbers makes the result totally random yet disallows miners from crafting 
+    winning bets. On the other hand, dice2.win themselves cannot control bet 
+    outcomes either because of block hash component. This is a well-known "commitment 
+    scheme" which enables dice2.win to provide gambling-grade random number 
+    generation allowing for big bets, jackpots and quick settlements while being 
+    fully transparent.
 
 5. What if I want to really verify that everything you say is actually true?
-Feel free to study our Smart Contract - it’s available on Github. In case you have any questions or hesitations, drop us a line via Telegram, Twitter or e-mail.
+Feel free to study our Smart Contract - it’s available on Github. In case you 
+have any questions or hesitations, drop us a line via Telegram, Twitter or e-mail.
 
 6. What are the fees?
-Every bet is deducted 1 % (but no less than 0.0003 ETH) in favour of the dice2.win (to help us pay the bills and keep the game running) and 0.001 ETH more gets accumulated in the jackpot for bets of 0.1 ETH and up (which also makes these bets participate in jackpot!)
+Every bet is deducted 1 % (but no less than 0.0003 ETH) in favour of the 
+dice2.win (to help us pay the bills and keep the game running) and 0.001 ETH 
+more gets accumulated in the jackpot for bets of 0.1 ETH and up (which also 
+makes these bets participate in jackpot!)
  */
 
 // * Uses hybrid commit-reveal + block hash random number generation that is immune
@@ -121,7 +173,7 @@ contract Dice2Win {
     // congestion; such bets can be refunded via invoking refundBet.
     uint constant BET_EXPIRATION_BLOCKS = 250;
 
-    // Some deliberately invalid address to initialize the secret signer with.
+    // Some deliberately(故意的) invalid address to initialize the secret signer with.
     // Forces maintainers to invoke setSecretSigner before processing any bets.
     address constant DUMMY_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
@@ -162,7 +214,7 @@ contract Dice2Win {
     // Mapping from commits to all currently active & processed bets.
     mapping (uint => Bet) bets;
 
-    // Events that are issued to make statistic recovery easier.
+    // Events that are issued to make statistic(统计学的) recovery easier.
     event FailedPayment(address indexed beneficiary, uint amount);
     event Payment(address indexed beneficiary, uint amount);
     event JackpotPayment(address indexed beneficiary, uint amount);
@@ -170,7 +222,7 @@ contract Dice2Win {
     // This event is emitted in placeBet to record commit in the logs.
     event Commit(uint commit);
 
-    // Constructor. Deliberately does not take any parameters.
+    // Constructor. Deliberately(慎重的) does not take any parameters.
     constructor () public {
         owner = msg.sender;
         secretSigner = DUMMY_ADDRESS;
@@ -205,11 +257,11 @@ contract Dice2Win {
 
     // Change max bet reward. Setting this to zero effectively disables betting.
     function setMaxProfit(uint _maxProfit) public onlyOwner {
-        require (_maxProfit < MAX_AMOUNT, "maxProfit should be a sane number.");
+        require (_maxProfit < MAX_AMOUNT, "maxProfit should be a sane(理智的) number.");
         maxProfit = _maxProfit;
     }
 
-    // This function is used to bump up the jackpot fund. Cannot be used to lower it.
+    // This function is used to bump up(突然增加) the jackpot fund. Cannot be used to lower it.
     function increaseJackpot(uint increaseAmount) external onlyOwner {
         require (increaseAmount <= address(this).balance, "Increase amount larger than balance.");
         require (jackpotSize + lockedInBets + increaseAmount <= address(this).balance, "Not enough funds.");
@@ -238,7 +290,7 @@ contract Dice2Win {
     //  amount == 0 && gambler != 0 - 'processed' (can clean storage)
     //
     //  NOTE: Storage cleaning is not implemented in this contract version; it will be added
-    //        with the next upgrade to prevent polluting Ethereum state with expired bets.
+    //        with the next upgrade to prevent polluting(污染) Ethereum state with expired bets.
 
     // Bet placing transaction - issued by the player.
     //  betMask         - bet outcomes bit mask for modulo <= MAX_MASK_MODULO,
@@ -252,7 +304,7 @@ contract Dice2Win {
     //  r, s            - components of ECDSA signature of (commitLastBlock, commit). v is
     //                    guaranteed to always equal 27.
     //
-    // Commit, being essentially random 256-bit number, is used as a unique bet identifier in
+    // Commit, being essentially(本来，本质上) random 256-bit number, is used as a unique bet identifier in
     // the 'bets' mapping.
     //
     // Commits are signed with a block limit to ensure that they are used at most once - otherwise
@@ -261,16 +313,21 @@ contract Dice2Win {
     // placeBet block number plus BET_EXPIRATION_BLOCKS. See whitepaper for details.
     function placeBet(uint betMask, uint modulo, uint commitLastBlock, uint commit, bytes32 r, bytes32 s) external payable {
         // Check that the bet is in 'clean' state.
+        // 该地址没有进行过投注，才可以投注。根据结构体的地址是否为0地址进行判断。
         Bet storage bet = bets[commit];
         require (bet.gambler == address(0), "Bet should be in a 'clean' state.");
 
         // Validate input data ranges.
-        uint amount = msg.value;
+        uint amount = msg.value;//以太坊发送的交易金额，外部用户输入。
+        //游戏的模设置，必须大于0，小于100，
         require (modulo > 1 && modulo <= MAX_MODULO, "Modulo should be within range.");
+        //限定投注金额的范围：0.01ether到300000ether
         require (amount >= MIN_BET && amount <= MAX_AMOUNT, "Amount should be within range.");
+        //限定投注的注
         require (betMask > 0 && betMask < MAX_BET_MASK, "Mask should be within range.");
 
         // Check that commit is valid - it has not expired and its signature is valid.
+        // 当前区块数目不得必须小于等于提交的区块数目
         require (block.number <= commitLastBlock, "Commit has expired.");
         bytes32 signatureHash = keccak256(abi.encodePacked(uint40(commitLastBlock), commit));
         require (secretSigner == ecrecover(signatureHash, 27, r, s), "ECDSA signature is not valid.");
@@ -278,17 +335,21 @@ contract Dice2Win {
         uint rollUnder;
         uint mask;
 
-        if (modulo <= MAX_MASK_MODULO) {
+        if (modulo <= MAX_MASK_MODULO) {//MAX_MASK_MODULO=40
             // Small modulo games specify bet outcomes via bit mask.
             // rollUnder is a number of 1 bits in this mask (population count).
             // This magic looking formula is an efficient way to compute population
             // count on EVM for numbers below 2**40. For detailed proof consult
             // the dice2.win whitepaper.
+            // POPCNT_MULT   0x0000000000002000000000100000000008000000000400000000020000000001
+            //POPCNT_MASK    0x0001041041041041041041041041041041041041041041041041041041041041
+            //POPCNT_MODULO  0x3F
             rollUnder = ((betMask * POPCNT_MULT) & POPCNT_MASK) % POPCNT_MODULO;
             mask = betMask;
         } else {
             // Larger modulos specify the right edge of half-open interval of
             // winning bet outcomes.
+            // ??? 为什么在这种情况下，没有对mask赋值，mask为0吗？
             require (betMask > 0 && betMask <= modulo, "High modulo range, betMask larger than modulo.");
             rollUnder = betMask;
         }
@@ -297,6 +358,7 @@ contract Dice2Win {
         uint possibleWinAmount;
         uint jackpotFee;
 
+        //amount=msg.value
         (possibleWinAmount, jackpotFee) = getDiceWinAmount(amount, modulo, rollUnder);
 
         // Enforce max profit limit.
@@ -325,7 +387,7 @@ contract Dice2Win {
     // handled by the dice2.win croupier bot. To settle a bet with a specific "commit",
     // settleBet should supply a "reveal" number that would Keccak256-hash to
     // "commit". "blockHash" is the block hash of placeBet block as seen by croupier; it
-    // is additionally asserted to prevent changing the bet outcomes on Ethereum reorgs.
+    // is additionally asserted to prevent changing the bet outcomes on Ethereum reorgs(重整).
     function settleBet(uint reveal, bytes32 blockHash) external {
         uint commit = uint(keccak256(abi.encodePacked(reveal)));
 
@@ -340,7 +402,6 @@ contract Dice2Win {
         // Settle bet using reveal and blockHash as entropy sources.
         settleBetCommon(bet, reveal, blockHash);
     }
-
     // This method is used to settle a bet that was mined into an uncle block. At this
     // point the player was shown some bet outcome, but the blockhash at placeBet height
     // is different because of Ethereum chain reorg. We supply a full merkle proof of the
@@ -367,7 +428,6 @@ contract Dice2Win {
         // Settle bet using reveal and uncleHash as entropy sources.
         settleBetCommon(bet, reveal, uncleHash);
     }
-
     // Common settlement code for settleBet & settleBetUncleMerkleProof.
     function settleBetCommon(Bet storage bet, uint reveal, bytes32 entropyBlockHash) private {
         // Fetch bet parameters into local variables (to save gas).
@@ -383,9 +443,9 @@ contract Dice2Win {
         bet.amount = 0;
 
         // The RNG - combine "reveal" and blockhash of placeBet using Keccak256. Miners
-        // are not aware of "reveal" and cannot deduce it from "commit" (as Keccak256
-        // preimage is intractable), and house is unable to alter the "reveal" after
-        // placeBet have been mined (as Keccak256 collision finding is also intractable).
+        // are not aware of "reveal" and cannot deduce(推断) it from "commit" (as Keccak256
+        // preimage(逆像，原像) is intractable(难治的，棘手的)), and house is unable to alter the "reveal" after
+        // placeBet have been mined (as Keccak256 collision(碰撞) finding is also intractable).
         bytes32 entropy = keccak256(abi.encodePacked(reveal, entropyBlockHash));
 
         // Do a roll by taking a modulo of entropy. Compute winning amount.
@@ -404,19 +464,17 @@ contract Dice2Win {
             if ((2 ** dice) & bet.mask != 0) {
                 diceWin = diceWinAmount;
             }
-
         } else {
             // For larger modulos, check inclusion into half-open interval.
             if (dice < rollUnder) {
                 diceWin = diceWinAmount;
             }
-
         }
 
         // Unlock the bet amount, regardless of the outcome.
         lockedInBets -= uint128(diceWinAmount);
 
-        // Roll for a jackpot (if eligible).
+        // Roll for a jackpot (if eligible(合格的)).
         if (amount >= MIN_JACKPOT_BET) {
             // The second modulo, statistically independent from the "main" dice roll.
             // Effectively you are playing two games at once!
@@ -437,12 +495,11 @@ contract Dice2Win {
         // Send the funds to gambler.
         sendFunds(gambler, diceWin + jackpotWin == 0 ? 1 wei : diceWin + jackpotWin, diceWin);
     }
-
     // Refund transaction - return the bet amount of a roll that was not processed in a
-    // due timeframe. Processing such blocks is not possible due to EVM limitations (see
+    // due timeframe(时间表). Processing such blocks is not possible due to EVM limitations (see
     // BET_EXPIRATION_BLOCKS comment above for details). In case you ever find yourself
     // in a situation like this, just contact the dice2.win support, however nothing
-    // precludes you from invoking this method yourself.
+    // precludes(排除) you from invoking this method yourself.
     function refundBet(uint commit) external {
         // Check that bet is in 'active' state.
         Bet storage bet = bets[commit];
@@ -468,13 +525,15 @@ contract Dice2Win {
     }
 
     // Get the expected win amount after house edge is subtracted.
+    // pure : not to read from or modify the state
     function getDiceWinAmount(uint amount, uint modulo, uint rollUnder) private pure returns (uint winAmount, uint jackpotFee) {
         require (0 < rollUnder && rollUnder <= modulo, "Win probability out of range.");
 
+        //MIN_JACKPOT_BET = 0.1ether  JACKPOT_FEE = 0.001ether
         jackpotFee = amount >= MIN_JACKPOT_BET ? JACKPOT_FEE : 0;
-
+        // HOUSE_EDGE_PERCENT = 1
         uint houseEdge = amount * HOUSE_EDGE_PERCENT / 100;
-
+        // HOUSE_EDGE_MINIMUM_AMOUNT = 0.0003 ether
         if (houseEdge < HOUSE_EDGE_MINIMUM_AMOUNT) {
             houseEdge = HOUSE_EDGE_MINIMUM_AMOUNT;
         }
@@ -483,7 +542,7 @@ contract Dice2Win {
         winAmount = (amount - houseEdge - jackpotFee) * modulo / rollUnder;
     }
 
-    // Helper routine to process the payment.
+    // Helper routine(日常的，例行的) to process the payment.
     function sendFunds(address beneficiary, uint amount, uint successLogAmount) private {
         if (beneficiary.send(amount)) {
             emit Payment(beneficiary, successLogAmount);
@@ -516,15 +575,19 @@ contract Dice2Win {
     // beginning in the calldata.
     function verifyMerkleProof(uint seedHash, uint offset) pure private returns (bytes32 blockHash, bytes32 uncleHash) {
         // (Safe) assumption - nobody will write into RAM during this method invocation.
-        uint scratchBuf1;  assembly { scratchBuf1 := mload(0x40) }
+        uint scratchBuf1;  
+        assembly { scratchBuf1 := mload(0x40) }
 
-        uint uncleHeaderLength; uint blobLength; uint shift; uint hashSlot;
+        uint uncleHeaderLength; 
+        uint blobLength; 
+        uint shift; 
+        uint hashSlot;
 
         // Verify merkle proofs up to uncle block header. Calldata layout is:
         //  - 2 byte big-endian slice length
         //  - 2 byte big-endian offset to the beginning of previous slice hash within the current slice (should be zeroed)
         //  - followed by the current slice verbatim
-        for (;; offset += blobLength) {
+        for ( ; ; offset += blobLength) {
             assembly { blobLength := and(calldataload(sub(offset, 30)), 0xffff) }
             if (blobLength == 0) {
                 // Zero slice length marks the end of uncle proof.
@@ -551,8 +614,10 @@ contract Dice2Win {
 
         // Construct the uncle list of a canonical block.
         uint scratchBuf2 = scratchBuf1 + uncleHeaderLength;
-        uint unclesLength; assembly { unclesLength := and(calldataload(sub(offset, 28)), 0xffff) }
-        uint unclesShift;  assembly { unclesShift := and(calldataload(sub(offset, 26)), 0xffff) }
+        uint unclesLength; 
+        assembly { unclesLength := and(calldataload(sub(offset, 28)), 0xffff) }
+        uint unclesShift;  
+        assembly { unclesShift := and(calldataload(sub(offset, 26)), 0xffff) }
         require (unclesShift < unclesLength, "Shift bounds check.");
 
         offset += 6;
@@ -586,12 +651,14 @@ contract Dice2Win {
     // Helper to check the placeBet receipt. "offset" is the location of the proof beginning in the calldata.
     // RLP layout: [triePath, str([status, cumGasUsed, bloomFilter, [[address, [topics], data]])]
     function requireCorrectReceipt(uint offset) view private {
-        uint leafHeaderByte; assembly { leafHeaderByte := byte(0, calldataload(offset)) }
+        uint leafHeaderByte; 
+        assembly { leafHeaderByte := byte(0, calldataload(offset)) }
 
         require (leafHeaderByte >= 0xf7, "Receipt leaf longer than 55 bytes.");
         offset += leafHeaderByte - 0xf6;
 
-        uint pathHeaderByte; assembly { pathHeaderByte := byte(0, calldataload(offset)) }
+        uint pathHeaderByte; 
+        assembly { pathHeaderByte := byte(0, calldataload(offset)) }
 
         if (pathHeaderByte <= 0x7f) {
             offset += 1;
@@ -601,19 +668,23 @@ contract Dice2Win {
             offset += pathHeaderByte - 0x7f;
         }
 
-        uint receiptStringHeaderByte; assembly { receiptStringHeaderByte := byte(0, calldataload(offset)) }
+        uint receiptStringHeaderByte; 
+        assembly { receiptStringHeaderByte := byte(0, calldataload(offset)) }
         require (receiptStringHeaderByte == 0xb9, "Receipt string is always at least 256 bytes long, but less than 64k.");
         offset += 3;
 
-        uint receiptHeaderByte; assembly { receiptHeaderByte := byte(0, calldataload(offset)) }
+        uint receiptHeaderByte; 
+        assembly { receiptHeaderByte := byte(0, calldataload(offset)) }
         require (receiptHeaderByte == 0xf9, "Receipt is always at least 256 bytes long, but less than 64k.");
         offset += 3;
 
-        uint statusByte; assembly { statusByte := byte(0, calldataload(offset)) }
+        uint statusByte; 
+        assembly { statusByte := byte(0, calldataload(offset)) }
         require (statusByte == 0x1, "Status should be success.");
         offset += 1;
 
-        uint cumGasHeaderByte; assembly { cumGasHeaderByte := byte(0, calldataload(offset)) }
+        uint cumGasHeaderByte; 
+        assembly { cumGasHeaderByte := byte(0, calldataload(offset)) }
         if (cumGasHeaderByte <= 0x7f) {
             offset += 1;
 
@@ -622,31 +693,37 @@ contract Dice2Win {
             offset += cumGasHeaderByte - 0x7f;
         }
 
-        uint bloomHeaderByte; assembly { bloomHeaderByte := byte(0, calldataload(offset)) }
+        uint bloomHeaderByte; 
+        assembly { bloomHeaderByte := byte(0, calldataload(offset)) }
         require (bloomHeaderByte == 0xb9, "Bloom filter is always 256 bytes long.");
         offset += 256 + 3;
 
-        uint logsListHeaderByte; assembly { logsListHeaderByte := byte(0, calldataload(offset)) }
+        uint logsListHeaderByte; 
+        assembly { logsListHeaderByte := byte(0, calldataload(offset)) }
         require (logsListHeaderByte == 0xf8, "Logs list is less than 256 bytes long.");
         offset += 2;
 
-        uint logEntryHeaderByte; assembly { logEntryHeaderByte := byte(0, calldataload(offset)) }
+        uint logEntryHeaderByte; 
+        assembly { logEntryHeaderByte := byte(0, calldataload(offset)) }
         require (logEntryHeaderByte == 0xf8, "Log entry is less than 256 bytes long.");
         offset += 2;
 
-        uint addressHeaderByte; assembly { addressHeaderByte := byte(0, calldataload(offset)) }
+        uint addressHeaderByte; 
+        assembly { addressHeaderByte := byte(0, calldataload(offset)) }
         require (addressHeaderByte == 0x94, "Address is 20 bytes long.");
 
-        uint logAddress; assembly { logAddress := and(calldataload(sub(offset, 11)), 0xffffffffffffffffffffffffffffffffffffffff) }
+        uint logAddress; 
+        assembly { logAddress := and(calldataload(sub(offset, 11)), 0xffffffffffffffffffffffffffffffffffffffff) }
         require (logAddress == uint(address(this)));
     }
 
     // Memory copy.
     function memcpy(uint dest, uint src, uint len) pure private {
         // Full 32 byte words
-        for(; len >= 32; len -= 32) {
+        for( ; len >= 32; len -= 32) {
             assembly { mstore(dest, mload(src)) }
-            dest += 32; src += 32;
+            dest += 32; 
+            src += 32;
         }
 
         // Remaining bytes

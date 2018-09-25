@@ -13,8 +13,55 @@ const web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider(provider));
 
 // const CONTRACT_ADDRESS = '0x8c11a16f3d7ecf8b283d5a12f0359cc1ce7f6dd7'
-
 // let Dice2Win = new web3.eth.Contract(Dice2Win_JSON_Interface,CONTRACT_ADDRESS);
+
+/**对message取hash */
+// const commit = '1';
+// const commitHash = web3.utils.sha3(commit);
+// console.log('commitHash: ', commitHash);
+// commitHash:0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6
+
+/**commitLastBlock的处理 */
+// const commitLastBlock = 20;
+// const commitLastBlockPadLeft = web3.utils.padLeft(20,10);
+// console.log('commitLastBlockPadLeft: ', commitLastBlockPadLeft);
+// commitLastBlockPadLeft: 0x0000000014
+
+/**对commit，和commitLastBlock参数做压缩处理 */
+// const packed = web3.eth.abi.encodeParameters(['uint40','uint256'],['0x0000000014','0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6']);
+// console.log('packed: ', packed);
+// packed:0x0000000000000000000000000000000000000000000000000000000000000014c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6
+
+/**对压缩的数据取hash */
+// const ha = web3.utils.sha3('0x0000000000000000000000000000000000000000000000000000000000000014c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6');
+// console.log('ha: ', ha);
+// const ha2 = web3.utils.soliditySha3('0x0000000014','0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6');
+// console.log('ha2: ', ha2);
+// ha: 0x39be072bbf2ff40a969614e26ce931afeea6b62f4b8a24ee8ce5a82d9fcbcc3d
+// ha2: 0x359a8c5930178c8c4e96caf6dac66574002e16f05a601d8a5942d66be0ed36fb
+
+/**获取签名 */
+// const sign = web3.eth.accounts.sign('0x359a8c5930178c8c4e96caf6dac66574002e16f05a601d8a5942d66be0ed36fb','0xe53362cb0367d6334c8d2c9fe3c21586e655e7a84fc41b5a9d106d569d0560d1');
+// console.log('sign: ', sign);
+// { 
+// 	message: '0x39be072bbf2ff40a969614e26ce931afeea6b62f4b8a24ee8ce5a82d9fcbcc3d',
+//   	messageHash: '0x1ed95773d38add5fa6f5779c29847061f4fd4d6a0ecf7bf3294eb63734242243',
+//   	v: '0x1b',
+//   	r: '0x1e33eed1d5ffc4e9beb25c91fa1113890833d5650f06c08950888e0828073224',
+//   	s: '0x37e34f317d018eb8f08e2c2630935b9bffde56872859c5c92c30596a9364d83f',
+//   	signature: '0x1e33eed1d5ffc4e9beb25c91fa1113890833d5650f06c08950888e082807322437e34f317d018eb8f08e2c2630935b9bffde56872859c5c92c30596a9364d83f1b' 
+// }
+//     0x359A8C5930178C8C4E96CAF6DAC66574002E16F05A601D8A5942D66BE0ED36FB
+// 0x359A8C5930178C8C4E96CAF6DAC66574002E16F05A601D8A5942D66BE0ED36FB
+
+// const recover = web3.eth.accounts.recover({
+// 	messageHash:'0x1ed95773d38add5fa6f5779c29847061f4fd4d6a0ecf7bf3294eb63734242243',
+// 	v:'0x1b',
+// 	r:'0x1e33eed1d5ffc4e9beb25c91fa1113890833d5650f06c08950888e0828073224',
+// 	s:'0x37e34f317d018eb8f08e2c2630935b9bffde56872859c5c92c30596a9364d83f'
+// })
+// console.log('recover: ', recover);
+// 0x16d194Af0220b2673618b5ef207479e86AC0A485
 
 /**设置secretSigner */
 // Dice2Win.methods.setSecretSigner('0x16d194Af0220b2673618b5ef207479e86AC0A485');
@@ -39,8 +86,8 @@ web3.setProvider(new web3.providers.HttpProvider(provider));
 // console.log('param: ', param);
 
 // param:'0x000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000001'
-const rs = web3.eth.accounts.sign('0x000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000001', 'e53362cb0367d6334c8d2c9fe3c21586e655e7a84fc41b5a9d106d569d0560d1');
-console.log('rs: ', rs);
+// const rs = web3.eth.accounts.sign('0x000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000001', 'e53362cb0367d6334c8d2c9fe3c21586e655e7a84fc41b5a9d106d569d0560d1');
+// console.log('rs: ', rs);
 // let a = { "message": '0xd65fc3b188dd92cfcb2a193a50840c1b782030fb06c5eee3125dadc48b9042ee0000000000000000000000000000000000000000000000000000000000000006',
 //   "messageHash": '0xad2775c6e7710f1f862b25191ecf802cb268643f8f89e9dbe3a5b5c4c499abf3',
 //   "v": '0x1c',

@@ -28,7 +28,7 @@ web3.setProvider(new web3.providers.HttpProvider(provider));
 // commitLastBlockPadLeft: 0x0000000014
 
 /**对commit，和commitLastBlock参数做压缩处理 */
-// const packed = web3.eth.abi.encodeParameters(['uint40','uint256'],['0x0000000014','0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6']);
+// const packed = web3.eth.abi.encodeParameters(['uint40','uint256'],[20,'0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6']);
 // console.log('packed: ', packed);
 // packed:0x0000000000000000000000000000000000000000000000000000000000000014c89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6
 
@@ -41,7 +41,7 @@ web3.setProvider(new web3.providers.HttpProvider(provider));
 // ha2: 0x359a8c5930178c8c4e96caf6dac66574002e16f05a601d8a5942d66be0ed36fb
 
 /**获取签名 */
-// const sign = web3.eth.accounts.sign('0x359a8c5930178c8c4e96caf6dac66574002e16f05a601d8a5942d66be0ed36fb','0xe53362cb0367d6334c8d2c9fe3c21586e655e7a84fc41b5a9d106d569d0560d1');
+// const sign = web3.eth.accounts.sign('0x39be072bbf2ff40a969614e26ce931afeea6b62f4b8a24ee8ce5a82d9fcbcc3d','0xe53362cb0367d6334c8d2c9fe3c21586e655e7a84fc41b5a9d106d569d0560d1');
 // console.log('sign: ', sign);
 // { 
 // 	message: '0x39be072bbf2ff40a969614e26ce931afeea6b62f4b8a24ee8ce5a82d9fcbcc3d',
@@ -104,3 +104,21 @@ web3.setProvider(new web3.providers.HttpProvider(provider));
 // 	s:'0x72e6be3c5f4ee1cdd0db3dd209e3a5897010a275eaa24b25c4d10749394c895a'
 // }
 // Dice2Win.methods.placeBet(bet.betMask,bet.modulo,bet.commitLastBlock,bet.commit,bet.r,bet.s);
+
+// const commit = '0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6';
+// const commitLastBlock = 20;
+// const packed = web3.eth.abi.encodeParameters(['uint40','uint256'],[commitLastBlock,commit]);
+// const hash = web3.utils.sha3(packed);
+// const sign = web3.eth.accounts.sign(hash,'0xe53362cb0367d6334c8d2c9fe3c21586e655e7a84fc41b5a9d106d569d0560d1');
+// sign = { 
+// 	message: '0x39be072bbf2ff40a969614e26ce931afeea6b62f4b8a24ee8ce5a82d9fcbcc3d',
+//   	messageHash: '0x1ed95773d38add5fa6f5779c29847061f4fd4d6a0ecf7bf3294eb63734242243',
+//   	v: '0x1b',
+//   	r: '0x1e33eed1d5ffc4e9beb25c91fa1113890833d5650f06c08950888e0828073224',
+//   	s: '0x37e34f317d018eb8f08e2c2630935b9bffde56872859c5c92c30596a9364d83f',
+//   	signature: '0x1e33eed1d5ffc4e9beb25c91fa1113890833d5650f06c08950888e082807322437e34f317d018eb8f08e2c2630935b9bffde56872859c5c92c30596a9364d83f1b' 
+// }
+//上面的数据使用web3.js在node环境中计算的，下面两句是智能合约里面的代码，签名验证不通过啊，
+//通过web3的recover函数是可以得到地址的，也是在智能合约中设置的地址，即下面的secretSigner
+//bytes32 signatureHash = keccak256(abi.encodePacked(uint40(commitLastBlock), commit));
+//require (secretSigner == ecrecover(signatureHash, 27, r, s), "ECDSA signature is not valid.");

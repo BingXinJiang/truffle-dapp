@@ -251,6 +251,7 @@ contract Dice2Win {
     }
 
     // See comment for "secretSigner" variable.
+    // The address corresponding to a private key used to sign placeBet commits.
     function setSecretSigner(address newSecretSigner) external onlyOwner {
         secretSigner = newSecretSigner;
     }
